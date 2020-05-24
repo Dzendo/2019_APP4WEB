@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/action_calc"
+          android:title="@string/action_calc"
+          android:orderInCategory="100"
+          app:showAsAction="never"/>
+    <item android:id="@+id/action_help"
+          android:title="@string/action_help"
+          android:orderInCategory="100"
+          app:showAsAction="never"/>
+    <item android:id="@+id/action_template"
+          android:title="@string/action_template"
+          android:orderInCategory="100"
+          app:showAsAction="never"/>
+    <item android:id="@+id/action_service"
+          android:title="@string/action_service"
+          android:orderInCategory="100"
+          app:showAsAction="never"/>
+    <group android:id="@+id/group_http">
+        <item android:id="@+id/action_http_settings"
+              android:title="@string/action_http_settings"
+              android:orderInCategory="100"
+              app:showAsAction="never"/>
+        <item android:id="@+id/action_gor_settings"
+              android:title="@string/action_gor_settings"
+              android:orderInCategory="100"
+              app:showAsAction="never"/>
+        <item android:id="@+id/action_vert_settings"
+              android:title="@string/action_vert_settings"
+              android:orderInCategory="100"
+              app:showAsAction="never"/>
+        <item android:id="@+id/action_settings"
+              android:title="@string/action_settings"
+              android:orderInCategory="100"
+              app:showAsAction="never"/>
+
+    </group>
+</menu>

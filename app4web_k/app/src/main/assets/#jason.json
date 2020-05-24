@@ -1,0 +1,19 @@
+{
+  "$jason": {
+    "head": {
+      "title": "+7(499)340-42-13",
+      "actions": { "$load": { "type": "$render" } }
+    },
+        "body": {
+          "background": {
+            "type": "html",
+            "url": "http://####.###/",
+            "action": { "type": "$default" }
+          }
+        }
+  }
+}
+
+
+
+    

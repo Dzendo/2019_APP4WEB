@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">APP4WEB-9.1</string>
+    <string name="urljason">#jason.json</string>
+    <string name="template">#jason.json</string>
+    <string name="template0">#jason0.json</string>
+    <string name="template1">#tpl01rn.json</string>
+    <string name="template2">#tpl011nn.json</string>
+    <string name="template3">#tpl011nnfab.json</string>
+
+    <string name="http_setting">https://DinaDurykina.github.io/web4app_setting.json</string>
+    <string name="http_setting_">https://DinaDurykina.github.io/Setting_comment.json</string>
+    <string name="url">https://jasonette.github.io/Jasonpedia/hello.json</string>
+
+    <string name="launch">file://preload.json</string>
+
+    <string name="ja_on">{ J A $ O N }</string>
+    <string name="action_settings">Настройка</string>
+    <string name="action_chat">Спросить</string>
+    <string name="action_order">Заказать</string>
+    <string name="action_invois">Посчитать</string>
+
+    <string name="app_ad_unit_id_0">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="app_ad_unit_id_0_my">ca-app-pub-3769175412391280~4662482161</string>
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="banner_ad_unit_id_my">ca-app-pub-3769175412391280/6119157772</string>
+
+</resources>
