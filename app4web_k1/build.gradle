@@ -2,19 +2,19 @@
 // файл сборки верхнего уровня, в который вы можете добавить параметры конфигурации, общие для всех подпроектов / модулей.
 
 buildscript {
-    ext.kotlin_version = "1.4-M1"
+    ext.kotlin_version = '1.4.0'
     repositories {
         google()
         jcenter()
         maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.0-alpha09'
+        classpath 'com.android.tools.build:gradle:4.0.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.google.gms:google-services:4.3.3'
         // Ошибка- obsolete app4web при build - подлежит исправлению
         // 4,2,0 не было и вот опять :  'variant.getMergeResourcesProvider() 
-        classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.2.2'
+        classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.3.0'
     }
 }
 

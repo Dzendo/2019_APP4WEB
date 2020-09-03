@@ -6,9 +6,10 @@ plugins {
     id 'androidx.navigation.safeargs'
 }
 android {
-    compileSdkVersion 'android-R'
-    buildToolsVersion '30.0.0 rc4'
-    ndkVersion '21.1.6363665 rc3'
+    compileSdkVersion 29
+    buildToolsVersion '29.0.3'
+    //ndkVersion '21.1.6363665 rc3'
+    //ndkVersion '21.0.6113669'
     defaultConfig {
         applicationId "site.app4web.app4web"
         minSdkVersion 22
@@ -59,9 +60,9 @@ dependencies {
     //implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"  // not need
     //implementation 'androidx.appcompat:appcompat:1.1.0-rc01'  //  not need
     //implementation 'androidx.core:core-ktx:1.2.0-alpha03'  //  not need
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta6'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
     //implementation 'androidx.recyclerview:recyclerview:1.1.0-beta03' //  not need
-    implementation 'com.google.android.material:material:1.2.0-alpha06'
+    implementation 'com.google.android.material:material:1.2.0'
 
     // STANDART FAB
     //implementation 'androidx.multidex:multidex:2.0.1'    // >64K DEX  //  not need
@@ -96,7 +97,7 @@ dependencies {
     // 4 - site.app4web.app4web.ExampleUnitTest
     testImplementation 'junit:junit:4.13'  // 4.12  -- > 4.13-beta-3
     //androidTestImplementation 'androidx.test.ext:junit:1.1.2-alpha02' //1.1.1 -- > 1.1.2-alpha02
-    androidTestImplementation 'androidx.test:runner:1.2.0'  // need site.app4web.app4web.ExampleInstrumentedTest
+    androidTestImplementation 'androidx.test:runner:1.3.0'  // need site.app4web.app4web.ExampleInstrumentedTest
     //androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0' //  not need ??
 
 
@@ -138,7 +139,7 @@ dependencies {
     // 15 - site.app4web.app4web.Service.websocket.JasonWebsocketService
     //implementation 'com.squareup.okhttp3:okhttp:4.1.0'  // Aug 12, 2019
     //implementation 'com.squareup.okhttp3:okhttp:4.2.2'  // Окт 02, 2019
-    implementation 'com.squareup.okhttp3:okhttp:4.7.2'  // 	(Jan 07, 2020)
+    implementation 'com.squareup.okhttp3:okhttp:4.8.0'  // 	(Jan 07, 2020)
     // рассмотреть стандарт google-service - может то же самое
 
     //  с GSON и XML rest

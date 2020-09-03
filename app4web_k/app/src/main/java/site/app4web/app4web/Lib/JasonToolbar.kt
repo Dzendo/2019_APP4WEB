@@ -24,15 +24,15 @@ class JasonToolbar : Toolbar {
     private var imageWidth = 0
     private var imageHeight = 0
 
-    constructor(context: Context?) : super(context) {}
-    constructor(context: Context?, attrs: AttributeSet?) : super(
+    constructor(context: Context) : super(context) {}
+    constructor(context: Context, attrs: AttributeSet?) : super(
         context,
         attrs
     ) {
     }
 
     constructor(
-        context: Context?,
+        context: Context,
         attrs: AttributeSet?,
         defStyleAttr: Int
     ) : super(context, attrs, defStyleAttr) {

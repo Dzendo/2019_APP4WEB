@@ -40,7 +40,7 @@ open class Launcher : Application() {
         try {
             val service = services!![serviceName]
             val method = service.javaClass.getMethod(
-                methodName,
+                methodName!!,
                 action.javaClass,
                 Context::class.java
             )
