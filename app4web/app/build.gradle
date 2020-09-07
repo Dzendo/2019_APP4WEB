@@ -7,14 +7,14 @@ plugins {
 }
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion '29.0.3'
+    compileSdkVersion 30
+    buildToolsVersion '30.0.2'
    // ndkVersion '21.1.6363665 rc3'
     //ndkVersion '21.0.6113669'
     defaultConfig {
         applicationId "site.app4web.app4web"
         minSdkVersion 22
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 3
         versionName "0.1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -63,7 +63,8 @@ dependencies {
     //implementation 'androidx.core:core-ktx:1.2.0-alpha03'  //  not need
     implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
     //implementation 'androidx.recyclerview:recyclerview:1.1.0-beta03' //  not need
-    implementation 'com.google.android.material:material:1.2.0'
+    //implementation 'com.google.android.material:material:1.2.0'
+    implementation 'com.google.android.material:material:1.2.1'
 
     // STANDART FAB
     //implementation 'androidx.multidex:multidex:2.0.1'    // >64K DEX  //  not need
@@ -94,7 +95,7 @@ dependencies {
     // для FireBase и Admob
     //implementation 'com.google.firebase:firebase-core:17.2.0'  //  not need ??
     // 2 - activity_main.xml
-    implementation 'com.google.firebase:firebase-ads:19.1.0'  // 18.1.1 ; 18.3.0
+    implementation 'com.google.firebase:firebase-ads:19.3.0'  // 18.1.1 ; 18.3.0 19.1.0 09.2020
     // 4 - site.app4web.app4web.ExampleUnitTest
     testImplementation 'junit:junit:4.13'  // 4.12  -- > 4.13-beta-3
     //androidTestImplementation 'androidx.test.ext:junit:1.1.2-alpha02' //1.1.1 -- > 1.1.2-alpha02
@@ -124,7 +125,7 @@ dependencies {
     //Это обучение поможет вам установить пример приложения для Android,
     // которое будет распознавать лица на фотографиях в режиме реального времени.
     // 11 - site.app4web.app4web.Service.vision.JasonVisionService
-    implementation 'com.google.android.gms:play-services-vision:20.0.0'
+    implementation 'com.google.android.gms:play-services-vision:20.1.2'  // 20.0.0 09.2020
 
     // Для Firebase - Нужно регистрировать пакет Генерировать JSON Добавлять Meta в Manifest
     // Firebase Cloud Messaging (FCM) - это кроссплатформенное решение для обмена сообщениями,
@@ -133,15 +134,16 @@ dependencies {
     // 5 now 2-site.app4web.app4web.Service.push.JasonPushMessageService
     // no  2- site.app4web.app4web.Service.push.JasonPushRegisterService
     // закоментарено JasonPushRegisterService  iid.FirebaseInstanceIdService
-    implementation 'com.google.firebase:firebase-messaging:20.2.0'
+    implementation 'com.google.firebase:firebase-messaging:20.2.4'  // 20.2.0 09.2020
     // implementation 'com.google.firebase:firebase-messaging:20.1.0'
 
     // Клиент HTTP & HTTP / 2 для приложений Android и Java
     // 15 - site.app4web.app4web.Service.websocket.JasonWebsocketService
     //implementation 'com.squareup.okhttp3:okhttp:4.1.0'  // Aug 12, 2019
     //implementation 'com.squareup.okhttp3:okhttp:4.2.2'  // Окт 02, 2019
-    implementation 'com.squareup.okhttp3:okhttp:4.8.0'  // 	(Jan 07, 2020)
-    // рассмотреть стандарт google-service - может то же самое
+    //implementation 'com.squareup.okhttp3:okhttp:4.8.0'  // 	(Jan 07, 2020)
+    implementation 'com.squareup.okhttp3:okhttp:4.8.1'  // 	(Jan 07, 2020)
+    //    // рассмотреть стандарт google-service - может то же самое
 
     //  с GSON и XML rest
     // Glide поддерживает извлечение, декодирование и отображение
@@ -155,7 +157,7 @@ dependencies {
     // 15-ItemAdapter;
     // 11-JasonImageHelper
     // 2 - site.app4web.app4web.Launcher.Launcher
-    implementation 'com.github.bumptech.glide:glide:3.7.0'    // Jan 24, 2016 3.7.0 stop --XX--> 4.9.0 Feb, 2019
+    implementation 'com.github.bumptech.glide:glide:3.7.0'    // Jan 24, 2016 3.7.0 stop --XX--> 4.9.0 Feb, 2019 4.11.0 XX
     //implementation 'com.github.bumptech.glide:glide:4.11.0'   // 	(Jan 08, 2020) не транслируется  XX
     // Jan 24, 2016 3.7.0 stop --XX--> 4.9.0 Feb, 2019
     // 35 error: cannot find symbol class GlideDrawable во многих модулях при подъеме
@@ -169,7 +171,8 @@ dependencies {
     // 30 - site.app4web.app4web.Action.JasonConvertAction;
     // 13  - seed\Core\JasonParser.java
     //implementation 'com.eclipsesource.j2v8:j2v8:5.0.103@aar'  // Apr 29, 2019
-    implementation 'com.eclipsesource.j2v8:j2v8:6.1.0@aar'  // feb 09, 2020
+    //implementation 'com.eclipsesource.j2v8:j2v8:6.1.0@aar'  // feb 09, 2020
+    implementation 'com.eclipsesource.j2v8:j2v8:6.2.0@aar'  // feb 09, 2021
 
     // Библиотека для воспроизведения поведения нижних навигационных указаний из Material Design.
     // Библиотека для реализации компонента «Нижняя навигация» из рекомендаций по проектированию материалов

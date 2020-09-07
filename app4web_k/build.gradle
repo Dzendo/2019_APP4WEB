@@ -14,7 +14,7 @@ buildscript {
         classpath 'com.google.gms:google-services:4.3.3'
         // Ошибка- obsolete app4web при build - подлежит исправлению
         // 4,2,0 не было и вот опять :  'variant.getMergeResourcesProvider() 
-        classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.2.2'
+        classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.3.0'
     }
 }
 

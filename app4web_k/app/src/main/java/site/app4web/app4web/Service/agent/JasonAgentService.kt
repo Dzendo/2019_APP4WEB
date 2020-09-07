@@ -911,7 +911,7 @@ class JasonAgentService  // Initialize
                     val agent =
                         context.agents[identifier] as WebView
                     // Find agent by ID
-                    context.runOnUiThread { agent.loadUrl(agent.url) }
+                    context.runOnUiThread { agent.loadUrl(agent.url!!) }
                     JasonHelper.next("success", action, JSONObject(), JSONObject(), context)
                     return
                 }

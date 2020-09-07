@@ -126,15 +126,10 @@ class JasonVisionService(context: AppCompatActivity) {
                 startCamera(context, surfaceHolder, side)
             }
 
-            override fun surfaceChanged(
-                surfaceHolder: SurfaceHolder?,
-                i: Int,
-                i1: Int,
-                i2: Int
-            ) {
+            override fun surfaceChanged(p0: SurfaceHolder, i: Int, i1: Int, i2: Int) {
             }
 
-            override fun surfaceDestroyed(surfaceHolder: SurfaceHolder?) {
+            override fun surfaceDestroyed(p0: SurfaceHolder) {
                 stopCamera()
             }
         })
