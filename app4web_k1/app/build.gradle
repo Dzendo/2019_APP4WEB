@@ -61,7 +61,7 @@ dependencies {
     //implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"  // not need
     //implementation 'androidx.appcompat:appcompat:1.1.0-rc01'  //  not need
     //implementation 'androidx.core:core-ktx:1.2.0-alpha03'  //  not need
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
     //implementation 'androidx.recyclerview:recyclerview:1.1.0-beta03' //  not need
     implementation 'com.google.android.material:material:1.2.1'
 
@@ -94,7 +94,7 @@ dependencies {
     // для FireBase и Admob
     //implementation 'com.google.firebase:firebase-core:17.2.0'  //  not need ??
     // 2 - activity_main.xml
-    implementation 'com.google.firebase:firebase-ads:19.3.0'  // 18.1.1 ; 18.3.0
+    implementation 'com.google.firebase:firebase-ads:19.4.0'  // 18.1.1 ; 18.3.0 19.3.0
     // 4 - site.app4web.app4web.ExampleUnitTest
     testImplementation 'junit:junit:4.13'  // 4.12  -- > 4.13-beta-3
     //androidTestImplementation 'androidx.test.ext:junit:1.1.2-alpha02' //1.1.1 -- > 1.1.2-alpha02
@@ -133,14 +133,14 @@ dependencies {
     // 5 now 2-site.app4web.app4web.Service.push.JasonPushMessageService
     // no  2- site.app4web.app4web.Service.push.JasonPushRegisterService
     // закоментарено JasonPushRegisterService  iid.FirebaseInstanceIdService
-    implementation 'com.google.firebase:firebase-messaging:20.2.4'
+    implementation 'com.google.firebase:firebase-messaging:20.3.0'
     // implementation 'com.google.firebase:firebase-messaging:20.1.0'
 
     // Клиент HTTP & HTTP / 2 для приложений Android и Java
     // 15 - site.app4web.app4web.Service.websocket.JasonWebsocketService
     //implementation 'com.squareup.okhttp3:okhttp:4.1.0'  // Aug 12, 2019
     //implementation 'com.squareup.okhttp3:okhttp:4.2.2'  // Окт 02, 2019
-    implementation 'com.squareup.okhttp3:okhttp:4.8.1'  // 	(Jan 07, 2020)
+    implementation 'com.squareup.okhttp3:okhttp:4.9.0'  // 	(Jan 07, 2020)
     // рассмотреть стандарт google-service - может то же самое
 
     //  с GSON и XML rest
