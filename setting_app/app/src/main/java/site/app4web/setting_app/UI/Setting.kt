@@ -94,7 +94,7 @@ class  Setting  {
     fun ReadSetting(http_setting:String?): Boolean {
 
         // Асинхронное считывание файла результат content должен быть не Null
-        val content = ProgressTask().execute(http_setting).get()
+        val content: String = ProgressTask().execute(http_setting).get()
         // разбор считанного JSON
         if (content=="Null") return false  // что нибудь сказать надо бы что нет файда
         try {
@@ -113,7 +113,7 @@ class  Setting  {
     fun ReadTemplate(http_template:String?): Boolean {
 
         // Асинхронное считывание файла результат content должен быть не Null
-        val content = ProgressTask().execute(http_template).get()
+        val content = ProgressTask().execute(http_template)//.get()
         if (content == "Null") return false
         setting.template = content
         setting.nametemplate = Name_Template[this.number_template].name_template

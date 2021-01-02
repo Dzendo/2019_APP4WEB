@@ -1,16 +1,72 @@
 package site.app4web.setting_app.UI
-
+// https://stackoverflow.com/questions/55208748/asynctask-as-kotlin-coroutine
 import android.os.AsyncTask
+import kotlinx.coroutines.*
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import javax.net.ssl.HttpsURLConnection
 import java.net.URL
+import kotlin.coroutines.CoroutineContext
 
+
+class ProgressTaskCor : CoroutineScope {
+    private var job: Job = Job()
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main + job // to run code in Main(UI) Thread
+
+    // call this method to cancel a coroutine when you don't need it anymore,
+    // e.g. when user closes the screen
+    fun cancel() {
+        job.cancel()
+    }
+
+    fun execute(http:String?):String {
+        var result: String = "Null"
+        launch {
+            onPreExecute()
+             result =
+                doInBackground(http) // runs in background thread without blocking the Main Thread
+            onPostExecute(result)
+
+        }
+       return result
+    }
+
+
+
+    private suspend fun doInBackground(http:String?): String = withContext(Dispatchers.IO) { // to run code in Background Thread
+        // do async work
+        var content: String
+        if (http == null) return@withContext "NULL"
+        try {
+            content = getContent(http)
+
+        } catch (ex: IOException) {
+            content = "Null"
+        }
+        //  content= delComment (content)
+        return@withContext content
+    }
+      //  delay(1000) // simulate async work
+      //  return@withContext "SomeResult"
+
+
+    // Runs on the Main(UI) Thread
+    private fun onPreExecute() {
+        // show progress
+    }
+
+    // Runs on the Main(UI) Thread
+    private fun onPostExecute(result: String) {
+        // hide progress
+    }
+}
 // Класс для хранения информации, которая нужна для обработки задачи,
 // Тип объектов, которые используются для индикации процесса выполнения задачи
 // Тип результата задачи
+
 class ProgressTask : AsyncTask<String, Void, String>() {
     override fun doInBackground(vararg path: String): String {
 
@@ -31,7 +87,7 @@ class ProgressTask : AsyncTask<String, Void, String>() {
 }
 
 // https://metanit.com/java/android/15.1.php
-@Throws(IOException::class)
+//@Throws(IOException::class)
 private fun getContent(path: String): String {
    var reader : BufferedReader? = null
    val httpConnection: HttpURLConnection
