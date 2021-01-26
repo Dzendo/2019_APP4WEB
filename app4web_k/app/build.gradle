@@ -93,7 +93,7 @@ dependencies {
     // для FireBase и Admob
     //implementation 'com.google.firebase:firebase-core:17.2.0'  //  not need ??
     // 2 - activity_main.xml
-    implementation 'com.google.firebase:firebase-ads:19.6.0'  // 18.1.1 ; 18.3.0
+    implementation 'com.google.firebase:firebase-ads:19.7.0'  // 18.1.1 ; 18.3.0
     // 4 - site.app4web.app4web.ExampleUnitTest
     testImplementation 'junit:junit:4.13.1'  // 4.12  -- > 4.13-beta-3
     //androidTestImplementation 'androidx.test.ext:junit:1.1.2-alpha02' //1.1.1 -- > 1.1.2-alpha02
