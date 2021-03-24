@@ -2,13 +2,14 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-android-extensions'
+    // kotlin-parcelize
     id 'com.google.gms.google-services'
     id 'androidx.navigation.safeargs'
 }
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion '30.0.3'
+    compileSdkVersion 'android-S'
+    buildToolsVersion '31.0.0 rc2'
    // ndkVersion '21.1.6363665 rc3'
     //ndkVersion '21.0.6113669'
     defaultConfig {
@@ -64,7 +65,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     //implementation 'androidx.recyclerview:recyclerview:1.1.0-beta03' //  not need
     //implementation 'com.google.android.material:material:1.2.0'
-    implementation 'com.google.android.material:material:1.2.1'
+    implementation 'com.google.android.material:material:1.3.0'
 
     // STANDART FAB
     //implementation 'androidx.multidex:multidex:2.0.1'    // >64K DEX  //  not need
@@ -95,9 +96,9 @@ dependencies {
     // для FireBase и Admob
     //implementation 'com.google.firebase:firebase-core:17.2.0'  //  not need ??
     // 2 - activity_main.xml
-    implementation 'com.google.firebase:firebase-ads:19.7.0'  // 18.1.1 ; 18.3.0 19.1.0 09.2020 19.3.0
+    implementation 'com.google.firebase:firebase-ads:19.8.0'  // 18.1.1 ; 18.3.0 19.1.0 09.2020 19.3.0
     // 4 - site.app4web.app4web.ExampleUnitTest
-    testImplementation 'junit:junit:4.13.1'  // 4.12  -- > 4.13-beta-3
+    testImplementation 'junit:junit:4.13.2'  // 4.12  -- > 4.13-beta-3
     //androidTestImplementation 'androidx.test.ext:junit:1.1.2-alpha02' //1.1.1 -- > 1.1.2-alpha02
     androidTestImplementation 'androidx.test:runner:1.3.0'  // need site.app4web.app4web.ExampleInstrumentedTest
     //androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0' //  not need ??
@@ -142,7 +143,7 @@ dependencies {
     //implementation 'com.squareup.okhttp3:okhttp:4.1.0'  // Aug 12, 2019
     //implementation 'com.squareup.okhttp3:okhttp:4.2.2'  // Окт 02, 2019
     //implementation 'com.squareup.okhttp3:okhttp:4.8.0'  // 	(Jan 07, 2020)
-    implementation 'com.squareup.okhttp3:okhttp:4.9.0'  // 	(Jan 07, 2020)
+    implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.2'  // 	(Jan 07, 2020)
     //    // рассмотреть стандарт google-service - может то же самое
 
     //  с GSON и XML rest
