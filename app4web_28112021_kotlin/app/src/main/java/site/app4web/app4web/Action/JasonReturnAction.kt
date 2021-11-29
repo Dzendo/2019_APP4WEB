@@ -2,11 +2,12 @@ package site.app4web.app4web.Action
 
 import android.content.Context
 import android.content.Intent
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import android.util.Log
-import site.app4web.app4web.Core.JasonParser
-import site.app4web.app4web.Helper.JasonHelper
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import org.json.JSONObject
+import site.app4web.app4web.Core.JasonParser
+import site.app4web.app4web.Core.JasonParser.JasonParserListener
+import site.app4web.app4web.Helper.JasonHelper
 
 
 class JasonReturnAction {
@@ -103,17 +104,18 @@ class JasonReturnAction {
                 } else {
                     JSONObject()
                 }
-                JasonParser.Companion.getInstance(context)!!
-                    .setParserListener(JasonParserListener { parsed_options ->
+                JasonParser.getInstance(context)!!.setParserListener(object : JasonParserListener {
+                    override fun onFinished(parsed_options: JSONObject?) {
                         try {
                             val intent = Intent("call")
                             intent.putExtra("action", event.getJSONObject(type).toString())
                             intent.putExtra("data", parsed_options.toString())
                             LocalBroadcastManager.getInstance(context).sendBroadcast(intent)
-                        } catch (e: Exception) {
+                        } catch (e: java.lang.Exception) {
                             Log.d("Warning", e.stackTrace[0].methodName + " : " + e.toString())
                         }
-                    })
+                    }
+                })
                 JasonParser.Companion.getInstance(context)!!.parse("json", data, options, context)
             } catch (e: Exception) {
                 Log.d("Warning", e.stackTrace[0].methodName + " : " + e.toString())

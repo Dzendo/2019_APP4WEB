@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonSyntaxException
 
-import site.app4web.app4web.Launcher.Launcher.setting
+import site.app4web.app4web.Launcher.Launcher.Companion.setting
 import site.app4web.app4web.R
 
 

@@ -150,7 +150,8 @@ dependencies {
     //implementation 'com.squareup.okhttp3:okhttp:4.1.0'  // Aug 12, 2019
     //implementation 'com.squareup.okhttp3:okhttp:4.2.2'  // Окт 02, 2019
     //implementation 'com.squareup.okhttp3:okhttp:4.8.0'  // 	(Jan 07, 2020)
-    implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.3'  // 	(Jan 07, 2020)
+    implementation 'com.squareup.okhttp3:okhttp:4.9.0'  // 	(Jan 07, 2020)
+    // implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.3'  // 	(Jan 07, 2020)
     //    // рассмотреть стандарт google-service - может то же самое
 
     //  с GSON и XML rest

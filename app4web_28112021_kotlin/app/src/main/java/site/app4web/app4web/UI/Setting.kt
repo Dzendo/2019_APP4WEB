@@ -60,7 +60,7 @@ class  Setting  {
     }
     companion object {
         @JvmStatic
-        fun CreateSetting(http_setting_in: String?) : Setting? {
+        fun CreateSetting(http_setting_in: String?) : Setting {
             var http_setting = "https://DinaDurykina.github.io/web4app_setting.json"
             if (http_setting_in != null) http_setting = http_setting_in
             // Асинхронное считывание файла результат content должен быть не Null

@@ -1,16 +1,13 @@
 package site.app4web.app4web.Component
 import android.content.Context
-import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
-import androidx.core.graphics.drawable.DrawableCompat
-import androidx.core.graphics.drawable.RoundedBitmapDrawable
-import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
 import android.util.Base64
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
+import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.model.GlideUrl
@@ -19,8 +16,8 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable
 import com.bumptech.glide.request.animation.GlideAnimation
 import com.bumptech.glide.request.target.BitmapImageViewTarget
 import com.bumptech.glide.request.target.SimpleTarget
-import site.app4web.app4web.Helper.JasonHelper
 import org.json.JSONObject
+import site.app4web.app4web.Helper.JasonHelper
 import java.net.URI
 
 
@@ -100,7 +97,7 @@ object JasonImageComponent {
         corner_radius_float: Float,
         context: Context
     ) {
-        val new_url = JasonImageComponent.resolve_url(component, context)
+        val new_url = resolve_url(component, context)
         try {
             Glide
                 .with(context)
@@ -108,14 +105,14 @@ object JasonImageComponent {
                 .asBitmap()
                 .fitCenter()
                 .into(object : BitmapImageViewTarget(view as ImageView) {
-                    override fun setResource(res: Bitmap?) {
+                    override fun setResource(res: Bitmap) {
                         val bitmapDrawable =
                             RoundedBitmapDrawableFactory.create(context.resources, res)
                         bitmapDrawable.cornerRadius = corner_radius_float
-                        view.setImageDrawable(bitmapDrawable)
+                        (view as ImageView).setImageDrawable(bitmapDrawable)
                     }
                 })
-        } catch (e: Exception) {
+        } catch (e: java.lang.Exception) {
             Log.d("Warning", e.stackTrace[0].methodName + " : " + e.toString())
         }
     }
@@ -172,10 +169,10 @@ object JasonImageComponent {
                                 wrapper,
                                 JasonHelper.parse_color(style.getString("color"))
                             )
-                            view.setImageDrawable(wrapper)
+                            (view as ImageView).setImageDrawable(wrapper)
                         } catch (e: Exception) {
                             Log.d("Warning", e.stackTrace[0].methodName + " : " + e.toString())
-                            view.setImageDrawable(d)
+                            (view as ImageView).setImageDrawable(d)
                         }
                     }
                 })
@@ -212,7 +209,7 @@ object JasonImageComponent {
                     if (component.getString("url").contains("file://")) {
                         if (corner_radius == 0f) {
                             try {
-                                if (component.getString("url").matches(".*\\.gif")) {
+                                if (component.getString("url").matches(".*\\.gif".toRegex())) {
                                     JasonImageComponent.gif(component, view, context)
                                 } else {
                                     if (style.has("color")) {
@@ -243,7 +240,7 @@ object JasonImageComponent {
                     } else {
                         if (corner_radius == 0f) {
                             try {
-                                if (component.getString("url").matches(".*\\.gif")) {
+                                if (component.getString("url").matches(".*\\.gif".toRegex())) {
                                     JasonImageComponent.gif(component, view, context)
                                 } else {
                                     if (style.has("color")) {

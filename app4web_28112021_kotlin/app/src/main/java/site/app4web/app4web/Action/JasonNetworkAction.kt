@@ -1,27 +1,19 @@
 package site.app4web.app4web.Action
 
 import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Base64
 import android.util.Log
-import site.app4web.app4web.Core.JasonViewActivity
-import site.app4web.app4web.Helper.JasonHelper
-import site.app4web.app4web.Launcher.Launcher
+import okhttp3.*
 import org.json.JSONObject
+import site.app4web.app4web.Helper.JasonHelper
+import site.app4web.app4web.Helper.JasonHelper.callback
+import site.app4web.app4web.Helper.JasonHelper.next
+import site.app4web.app4web.Launcher.Launcher
+import timber.log.Timber
 import java.io.IOException
 import java.net.URI
-import java.util.UUID
-import okhttp3.Call
-import okhttp3.Callback
-import okhttp3.FormBody
-import okhttp3.MediaType
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.RequestBody
-import okhttp3.Response
-import timber.log.Timber
+import java.util.*
 
 
 class JasonNetworkAction {
@@ -55,7 +47,7 @@ class JasonNetworkAction {
                     session = JSONObject(str)
                 }
                 val request: Request
-                val builder = Builder()
+                val builder = Request.Builder()
                 // Attach Header from Session
                 // Прикрепить заголовок из сессии
                 if (session != null && session.has("header")) {
@@ -123,13 +115,13 @@ class JasonNetworkAction {
                         val mediaType: MediaType
                         val d: ByteArray
                         if (content_type.equals("json", ignoreCase = true)) {
-                            mediaType = parse.parse("application/json; charset=utf-8")
+                            mediaType = MediaType.parse("application/json; charset=utf-8")
                             d = options.getString("data").toByteArray()
                         } else {
-                            mediaType = parse.parse(content_type)
+                            mediaType = MediaType.parse(content_type)
                             d = Base64.decode(options.getString("data"), Base64.DEFAULT)
                         }
-                        val requestBuilder = Builder()
+                        val requestBuilder = Request.Builder()
                         request = requestBuilder
                             .url(url)
                             .method(method, RequestBody.create(mediaType, d))
@@ -137,7 +129,7 @@ class JasonNetworkAction {
                     } else {
                         // Params
                         // params
-                        val bodyBuilder = Builder()
+                        val bodyBuilder = FormBody.Builder()
                         if (options.has("data")) {
                             // default json
                             // по умолчанию json
@@ -185,48 +177,48 @@ class JasonNetworkAction {
                     (context.applicationContext as Launcher).getHttpClient(0)
                 }
                 client.newCall(request).enqueue(object : Callback {
-                    override fun onFailure(call: Call?, e: IOException) {
+                    override fun onFailure(call: Call, e: IOException) {
                         Timber.e(e)
                         try {
                             if (action.has("error")) {
                                 val error = JSONObject()
                                 error.put("data", e.toString())
                                 if (callback != null) {
-                                    JasonHelper.callback(callback, null, context)
+                                    callback(callback, null, context)
                                 } else {
-                                    JasonHelper.next("error", action, error, event, context)
+                                    next("error", action, error, event, context)
                                 }
                             }
-                        } catch (e2: Exception) {
+                        } catch (e2: java.lang.Exception) {
                             Log.d("Warning", e2.stackTrace[0].methodName + " : " + e2.toString())
                         }
                     }
 
                     @Throws(IOException::class)
-                    override fun onResponse(call: Call?, response: Response) {
+                    override fun onResponse(call: Call, response: Response) {
                         if (!response.isSuccessful) {
                             try {
                                 if (action.has("error")) {
                                     val error = JSONObject()
                                     error.put("data", response.toString())
                                     if (callback != null) {
-                                        JasonHelper.callback(callback, null, context)
+                                        callback(callback, null, context)
                                     } else {
-                                        JasonHelper.next("error", action, error, event, context)
+                                        next("error", action, error, event, context)
                                     }
                                 }
-                            } catch (e: Exception) {
+                            } catch (e: java.lang.Exception) {
                                 Log.d("Warning", e.stackTrace[0].methodName + " : " + e.toString())
                             }
                         } else {
                             try {
                                 val jsonData = response.body!!.string()
                                 if (callback != null) {
-                                    JasonHelper.callback(callback, jsonData, context)
+                                    callback(callback, jsonData, context)
                                 } else {
-                                    JasonHelper.next("success", action, jsonData, event, context)
+                                    next("success", action, jsonData, event, context)
                                 }
-                            } catch (e: Exception) {
+                            } catch (e: java.lang.Exception) {
                                 Log.d("Warning", e.stackTrace[0].methodName + " : " + e.toString())
                             }
                         }

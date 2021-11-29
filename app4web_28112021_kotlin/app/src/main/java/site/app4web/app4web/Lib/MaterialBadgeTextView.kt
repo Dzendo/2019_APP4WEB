@@ -267,8 +267,8 @@ class MaterialBadgeTextView @JvmOverloads constructor(
             mShadowRadius = shadowRadius
             mCircleDiameter = circleDiameter
             mRadialGradient = RadialGradient(
-                mCircleDiameter / 2.0, mCircleDiameter / 2.0,
-                mShadowRadius / 1.0, intArrayOf(
+                (mCircleDiameter / 2).toFloat(), (mCircleDiameter / 2).toFloat(),
+                mShadowRadius.toFloat(), intArrayOf(
                     FILL_SHADOW_COLOR, Color.TRANSPARENT
                 ), null, Shader.TileMode.CLAMP
             )

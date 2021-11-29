@@ -5,35 +5,29 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Build
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import android.util.Log
 import android.view.View
-import android.webkit.CookieManager
-import android.webkit.JavascriptInterface
-import android.webkit.WebChromeClient
-import android.webkit.WebSettings
-import android.webkit.WebView
-import android.webkit.WebViewClient
+import android.webkit.*
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.Request
+import okhttp3.Response
+import okhttp3.internal.notify
+import okhttp3.internal.wait
+import org.json.JSONArray
+import org.json.JSONObject
 import site.app4web.app4web.Core.JasonParser
+import site.app4web.app4web.Core.JasonParser.JasonParserListener
 import site.app4web.app4web.Core.JasonViewActivity
 import site.app4web.app4web.Helper.JasonHelper
 import site.app4web.app4web.Launcher.Launcher
-import org.json.JSONArray
-import org.json.JSONObject
 import java.io.IOException
-import java.util.ArrayList
 import java.util.concurrent.CountDownLatch
-import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicReference
-import okhttp3.Call
-import okhttp3.Callback
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Response
-
 
 
 class JasonAgentService  // Initialize
@@ -490,11 +484,13 @@ class JasonAgentService  // Initialize
                                     val ev = JSONObject()
                                     ev.put("\$jason", u)
                                     context.model!!["state"] = ev
-                                    JasonParser.Companion.getInstance(context)!!.setParserListener(
-                                        JasonParser.JasonParserListener { reduced_action ->
-                                            synchronized(notifier) {
-                                                notifier.set(reduced_action)
-                                                notifier.notify()
+                                    JasonParser.getInstance(context)!!
+                                        .setParserListener(object : JasonParserListener {
+                                            override fun onFinished(reduced_action: JSONObject?) {
+                                                synchronized(notifier) {
+                                                    notifier.set(reduced_action)
+                                                    notifier.notify()
+                                                }
                                             }
                                         })
                                     JasonParser.Companion.getInstance(context)!!.parse(
@@ -1081,19 +1077,19 @@ class JasonAgentService  // Initialize
         private fun fetch_remote(url: String, context: Context) {
             try {
                 val request: Request
-                val builder = Builder()
+                val builder = Request.Builder()
                 request = builder.url(url).build()
                 val client =
                     ((context as JasonViewActivity).application as Launcher).getHttpClient(0)
                 client.newCall(request).enqueue(object : Callback {
-                    override fun onFailure(call: Call?, e: IOException) {
+                    override fun onFailure(call: Call, e: IOException) {
                         errors.add("Failed to fetch from url")
                         latch.countDown()
                         e.printStackTrace()
                     }
 
                     @Throws(IOException::class)
-                    override fun onResponse(call: Call?, response: Response) {
+                    override fun onResponse(call: Call, response: Response) {
                         try {
                             if (!response.isSuccessful) {
                                 errors.add("Response was not successful")

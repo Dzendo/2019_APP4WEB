@@ -1,7 +1,5 @@
-package site.app4web.app4web.Helperimport
-
+package site.app4web.app4web.Helper
 import android.content.Context
-import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Environment
@@ -15,7 +13,6 @@ import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
-import java.io.IOException
 import java.net.URI
 
 
@@ -91,7 +88,7 @@ class JasonImageHelper {
                 }
             }
             url = GlideUrl(this.url, builder.build())
-            if (this.url!!.matches("\\.gif")) {
+            if (this.url!!.matches("\\.gif".toRegex())) {
                 /*
                 Glide
                         .with(context)
@@ -107,7 +104,7 @@ class JasonImageHelper {
                     .load(url)
                     .asBitmap()
                     .into(object : SimpleTarget<Bitmap?>(width, height) {
-                        override fun onResourceReady(bitmap: Bitmap, anim: GlideAnimation<*>?) {
+                        override fun onResourceReady(bitmap: Bitmap?, anim: GlideAnimation<in Bitmap?>?) {
                             var bitmapUri: Uri? = null
                             try {
                                 val file = File(
@@ -122,13 +119,13 @@ class JasonImageHelper {
                                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
                                 val byteArray = stream.toByteArray()
                                 listener!!.onLoaded(byteArray, bitmapUri)
-                            } catch (e: Exception) {
+                            } catch (e: java.lang.Exception) {
                                 Log.d("Warning", e.stackTrace[0].methodName + " : " + e.toString())
                             }
                         }
                     })
             }
-        } catch (e: Exception) {
+        } catch (e: java.lang.Exception) {
             Log.d("Warning", e.stackTrace[0].methodName + " : " + e.toString())
         }
     }

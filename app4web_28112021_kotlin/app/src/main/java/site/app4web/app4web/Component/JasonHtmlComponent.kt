@@ -69,7 +69,7 @@ object JasonHtmlComponent {
                 } else {
                     // webview shouldn't receive click
                     // веб-просмотр не должен получать клик
-                    view.setOnTouchListener(OnTouchListener { v, event ->
+                    view.setOnTouchListener(View.OnTouchListener { v, event ->
                         val component = v.tag as JSONObject
                         try {
                             // 1. if the action type $default is specified, do what's default for webview

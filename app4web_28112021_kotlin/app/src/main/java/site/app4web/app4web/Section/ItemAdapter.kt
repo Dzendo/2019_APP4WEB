@@ -1,28 +1,27 @@
 package site.app4web.app4web.Section
+
 import android.content.Context
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.GlideDrawable
 import com.bumptech.glide.request.animation.GlideAnimation
 import com.bumptech.glide.request.target.SimpleTarget
-import site.app4web.app4web.Component.JasonComponentFactory
-import site.app4web.app4web.Component.JasonImageComponent
-import site.app4web.app4web.Helper.JasonHelper
-import site.app4web.app4web.Core.JasonViewActivity
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
-import java.util.ArrayList
-import java.util.HashMap
-
+import site.app4web.app4web.Component.JasonComponentFactory
+import site.app4web.app4web.Component.JasonImageComponent
+import site.app4web.app4web.Core.JasonViewActivity
+import site.app4web.app4web.Helper.JasonHelper
+import java.util.*
 
 /********************************************************
  *
@@ -35,13 +34,18 @@ import java.util.HashMap
  * - Component
  *
  */
-class ItemAdapter(root_context: Context, context: Context, var items: ArrayList<JSONObject>) :
-    RecyclerView.Adapter<ItemAdapter.ViewHolder?>() {
+class ItemAdapter(
+    root_context: Context,
+    context: Context,
+    var items: ArrayList<JSONObject?>?
+) : RecyclerView.Adapter<ItemAdapter.ViewHolder?>() {
     var context: Context
     var root_context: Context
-    var cloned_items: ArrayList<JSONObject>
-    var signature_to_type: MutableMap<String, Int> = HashMap()
-    var type_to_signature: MutableMap<Int, String> = HashMap()
+    var cloned_items: ArrayList<JSONObject?>
+    var signature_to_type: MutableMap<String, Int> =
+        HashMap()
+    var type_to_signature: MutableMap<Int, String> =
+        HashMap()
     var factory = ViewHolderFactory()
     var isHorizontalScroll = false
     var backgroundImageView: ImageView? = null
@@ -52,9 +56,9 @@ class ItemAdapter(root_context: Context, context: Context, var items: ArrayList<
      * Логика RecyclerView / ViewHolder корневого уровня
      *
      */
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
-        View.OnClickListener {
-        var subviews: ArrayList<View>
+    inner class ViewHolder(itemView: View) :
+        RecyclerView.ViewHolder(itemView), View.OnClickListener {
+        var subviews: ArrayList<View>?
         var type: String
         val view: View
             get() = itemView
@@ -92,22 +96,22 @@ class ItemAdapter(root_context: Context, context: Context, var items: ArrayList<
         }
     }
 
-    fun updateItems(items: ArrayList<JSONObject>) {
+    fun updateItems(items: ArrayList<JSONObject?>?) {
         this.items = items
         cloned_items = ArrayList()
-        cloned_items.addAll(items)
+        cloned_items.addAll(items!!)
     }
 
     fun filter(text: String) {
         var text = text
-        items.clear()
+        items!!.clear()
         if (text.isEmpty()) {
-            items.addAll(cloned_items)
+            items!!.addAll(cloned_items)
         } else {
             text = text.toLowerCase()
             for (item in cloned_items) {
                 if (item.toString().toLowerCase().contains(text)) {
-                    items.add(item)
+                    items!!.add(item)
                 }
             }
         }
@@ -121,7 +125,7 @@ class ItemAdapter(root_context: Context, context: Context, var items: ArrayList<
     // 1. Генерируем подпись с использованием разметки JSON и присваиваем ее сигнатуре signature_to_type.
     // 2. Если подпись уже существует, вернуть type.
     override fun getItemViewType(position: Int): Int {
-        val item = items[position]
+        val item = items!![position]
 
         // if the key starts with "horizontal_section",
         // we deal with it in a special manner.
@@ -132,7 +136,7 @@ class ItemAdapter(root_context: Context, context: Context, var items: ArrayList<
         // Предполагая, что все элементы для горизонтального сечения будут иметь один и тот же прототип,
         // мы можем сгенерировать подпись только из одного из ее элементов.
         val stringified_item: String
-        stringified_item = if (item.has("horizontal_section")) {
+        stringified_item = if (item!!.has("horizontal_section")) {
             try {
                 val horizontal_section_items = item.getJSONArray("horizontal_section")
                 // assuming that the section would contain at least one item,
@@ -185,9 +189,12 @@ class ItemAdapter(root_context: Context, context: Context, var items: ArrayList<
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemAdapter.ViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): ViewHolder {
         val signatureString = type_to_signature[viewType]
-        val viewHolder: ItemAdapter.ViewHolder?
+        val viewHolder: ViewHolder?
         if (signatureString!!.startsWith("[")) {
             // Horizontal Section => Build a ViewHolder with a horizontally scrolling RecyclerView
             // Горизонтальное сечение => Создание ViewHolder с горизонтальной прокруткой RecyclerView
@@ -204,7 +211,8 @@ class ItemAdapter(root_context: Context, context: Context, var items: ArrayList<
 
             // 2. Create Adapter
             // 2. Создать адаптер
-            val horizontal_adapter = ItemAdapter(context, horizontalListView.context, ArrayList())
+            val horizontal_adapter =
+                ItemAdapter(context, horizontalListView.context, ArrayList())
             horizontal_adapter.isHorizontalScroll = true
 
             // 3. Connect RecyclerView with Adapter
@@ -213,7 +221,7 @@ class ItemAdapter(root_context: Context, context: Context, var items: ArrayList<
 
             // 4. Instantiate a new ViewHolder with the RecyclerView
             // 4. Создание нового ViewHolder с помощью RecyclerView
-            viewHolder = ItemAdapter.ViewHolder(horizontalListView)
+            viewHolder = ViewHolder(horizontalListView)
         } else {
             // Vertcial Section => Regular ViewHolder
             // Вертикальное сечение => Regular ViewHolder
@@ -225,12 +233,15 @@ class ItemAdapter(root_context: Context, context: Context, var items: ArrayList<
             }
             viewHolder = factory.build(null, json)
         }
-        return viewHolder
+        return viewHolder!!
     }
 
-    override fun onBindViewHolder(viewHolder: ItemAdapter.ViewHolder?, position: Int) {
-        val json = items[position]
-        if (json.has("horizontal_section")) {
+    override fun onBindViewHolder(
+        viewHolder: ViewHolder,
+        position: Int
+    ) {
+        val json = items!![position]
+        if (json!!.has("horizontal_section")) {
             // Horizontal Section
             // Горизонтальное сечение
             // In this case, the viewHolder is a Recyclerview.
@@ -239,13 +250,13 @@ class ItemAdapter(root_context: Context, context: Context, var items: ArrayList<
             // We fetch the recyclerview from the viewholder (the viewholder's itemView is the recyclerview)
             // Извлекаем обзор рециркулятора из видоискателя (элемент видоискателя - вид рециркулятора)
             val horizontalListAdapter =
-                (viewHolder!!.itemView as RecyclerView).adapter as ItemAdapter?
+                (viewHolder.itemView as RecyclerView).adapter as ItemAdapter?
 
             // Transform JasonArray into ArrayList
             // Преобразование массива Json в ArrayList
             try {
                 horizontalListAdapter!!.items =
-                    JasonHelper.toArrayList(json.getJSONArray("horizontal_section"))
+                    JasonHelper.toArrayList(json.getJSONArray("horizontal_section")) as ArrayList<JSONObject?>? // AS
             } catch (e: Exception) {
             }
 
@@ -263,7 +274,7 @@ class ItemAdapter(root_context: Context, context: Context, var items: ArrayList<
     }
 
     override fun getItemCount(): Int {
-        return items.size
+        return items!!.size
     }
 
     /********************************************************
@@ -296,7 +307,10 @@ class ItemAdapter(root_context: Context, context: Context, var items: ArrayList<
         private var subviews: ArrayList<View>? = null
         private var exists: Boolean? = null
         private var index = 0
-        fun build(prototype: ItemAdapter.ViewHolder?, json: JSONObject): ItemAdapter.ViewHolder? {
+        fun build(
+            prototype: ViewHolder?,
+            json: JSONObject?
+        ): ViewHolder? {
             val layout: LinearLayout
 
 
@@ -334,7 +348,8 @@ class ItemAdapter(root_context: Context, context: Context, var items: ArrayList<
 
                 // Create a new viewholder with the new layout
                 // Создаем новый видоискатель с новым макетом
-                val viewHolder: ItemAdapter.ViewHolder = ItemAdapter.ViewHolder(layout)
+                val viewHolder =
+                    ViewHolder(layout)
 
                 // Assign subviews
                 // Назначаем подпредставления
@@ -349,10 +364,10 @@ class ItemAdapter(root_context: Context, context: Context, var items: ArrayList<
         // ContentView - это вид верхнего уровня ячейки.
         // Это всегда макет.
         // Если JSON предоставляет компонент, ContentView создает оболочку макета вокруг него
-        private fun buildContentView(layout: LinearLayout, json: JSONObject): LinearLayout {
+        private fun buildContentView(layout: LinearLayout, json: JSONObject?): LinearLayout {
             var layout = layout
             try {
-                if (json.has("type")) {
+                if (json!!.has("type")) {
                     val type = json.getString("type")
                     if (type.equals("vertical", ignoreCase = true) || type.equals(
                             "horizontal",
@@ -415,7 +430,8 @@ class ItemAdapter(root_context: Context, context: Context, var items: ArrayList<
                         // Если мы находимся на корневом уровне
                         // и у дочернего элемента есть ширина, нам нужно установить ширину оболочки, чтобы обернуть его дочерний элемент. (для горизонтальных прокручиваемых секций)
                         val componentView = layout.getChildAt(0)
-                        val componentLayoutParams = componentView.layoutParams
+                        val componentLayoutParams =
+                            componentView.layoutParams
                         if (componentLayoutParams.width > 0) {
                             val layoutParams = layout.layoutParams
                             layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT
@@ -433,23 +449,24 @@ class ItemAdapter(root_context: Context, context: Context, var items: ArrayList<
         internal inner class BackgroundImage(var layout: LinearLayout) :
             SimpleTarget<GlideDrawable?>() {
             override fun onResourceReady(
-                resource: GlideDrawable,
-                glideAnimation: GlideAnimation<in GlideDrawable>
+                resource: GlideDrawable?,
+                glideAnimation: GlideAnimation<in GlideDrawable?>?
             ) {
                 layout.background = resource
             }
+
         }
 
         fun buildLayout(
             layout: LinearLayout,
-            item: JSONObject,
+            item: JSONObject?,
             parent: JSONObject?,
             level: Int
         ): LinearLayout {
             var level = level
             return if (exists!!) {
                 try {
-                    val components = item.getJSONArray("components")
+                    val components = item!!.getJSONArray("components")
                     for (i in 0 until components.length()) {
                         val component = components.getJSONObject(i)
                         if (component.getString("type").equals(
@@ -475,7 +492,7 @@ class ItemAdapter(root_context: Context, context: Context, var items: ArrayList<
             } else {
                 try {
                     // Layout styling
-                    val type = item.getString("type")
+                    val type = item!!.getString("type")
                     val style = JasonHelper.style(item, root_context)
                     layout.setBackgroundColor(JasonHelper.parse_color("rgba(0,0,0,0)"))
                     var components: JSONArray
@@ -488,7 +505,7 @@ class ItemAdapter(root_context: Context, context: Context, var items: ArrayList<
                     } else {
                         JSONArray()
                     }
-                    val layoutParams: LinearLayout.LayoutParams
+                    val layoutParams: LinearLayout.LayoutParams?
                     if (type.equals("vertical", ignoreCase = true)) {
                         // vertical layout
                         // вертикальное расположение
@@ -517,44 +534,51 @@ class ItemAdapter(root_context: Context, context: Context, var items: ArrayList<
                     } else {
                         "0"
                     }
-                    var padding_left = JasonHelper.pixels(root_context, default_padding, type)
-                        .toInt()
-                    var padding_right = JasonHelper.pixels(root_context, default_padding, type)
-                        .toInt()
-                    var padding_top = JasonHelper.pixels(root_context, default_padding, type)
-                        .toInt()
-                    var padding_bottom = JasonHelper.pixels(root_context, default_padding, type)
-                        .toInt()
+                    var padding_left =
+                        JasonHelper.pixels(root_context, default_padding, type).toInt()
+                    var padding_right =
+                        JasonHelper.pixels(root_context, default_padding, type).toInt()
+                    var padding_top =
+                        JasonHelper.pixels(root_context, default_padding, type).toInt()
+                    var padding_bottom =
+                        JasonHelper.pixels(root_context, default_padding, type).toInt()
                     if (style.has("padding")) {
-                        padding_left =
-                            JasonHelper.pixels(root_context, style.getString("padding"), type)
-                                .toInt()
+                        padding_left = JasonHelper.pixels(
+                            root_context,
+                            style.getString("padding"),
+                            type
+                        ).toInt()
                         padding_right = padding_left
                         padding_top = padding_left
                         padding_bottom = padding_left
                     }
                     if (style.has("padding_left")) {
-                        padding_left =
-                            JasonHelper.pixels(root_context, style.getString("padding_left"), type)
-                                .toInt()
+                        padding_left = JasonHelper.pixels(
+                            root_context,
+                            style.getString("padding_left"),
+                            type
+                        ).toInt()
                     }
                     if (style.has("padding_right")) {
-                        padding_right =
-                            JasonHelper.pixels(context, style.getString("padding_right"), type)
-                                .toInt()
+                        padding_right = JasonHelper.pixels(
+                            context,
+                            style.getString("padding_right"),
+                            type
+                        ).toInt()
                     }
                     if (style.has("padding_top")) {
-                        padding_top =
-                            JasonHelper.pixels(root_context, style.getString("padding_top"), type)
-                                .toInt()
+                        padding_top = JasonHelper.pixels(
+                            root_context,
+                            style.getString("padding_top"),
+                            type
+                        ).toInt()
                     }
                     if (style.has("padding_bottom")) {
                         padding_bottom = JasonHelper.pixels(
                             root_context,
                             style.getString("padding_bottom"),
                             type
-                        )
-                            .toInt()
+                        ).toInt()
                     }
                     layout.setPadding(padding_left, padding_top, padding_right, padding_bottom)
 
@@ -564,20 +588,20 @@ class ItemAdapter(root_context: Context, context: Context, var items: ArrayList<
                         if (level == 0) {
                             // top level. allow image background
                             val background = style.getString("background")
-                            if (background.matches("(file|http[s]?):\\/\\/.*")) {
+                            if (background.matches("(file|http[s]?):\\/\\/.*".toRegex())) {
                                 val c = JSONObject()
                                 c.put("url", background)
                                 var cacheStrategy = DiskCacheStrategy.RESULT
                                 // gif doesn't work with RESULT cache strategy
                                 // gif не работает со стратегией кэширования RESULT
                                 // TODO: Check with Glide V4
-                                if (background.matches(".*\\.gif")) {
+                                if (background.matches(".*\\.gif".toRegex())) {
                                     cacheStrategy = DiskCacheStrategy.SOURCE
                                 }
                                 Glide.with(root_context)
                                     .load(JasonImageComponent.resolve_url(c, root_context))
                                     .diskCacheStrategy(cacheStrategy)
-                                    .into(ItemAdapter.ViewHolderFactory.BackgroundImage(layout))
+                                    .into(BackgroundImage(layout))
                             } else {
                                 // plain background
                                 // простой фон
@@ -643,27 +667,28 @@ class ItemAdapter(root_context: Context, context: Context, var items: ArrayList<
             val style = JasonHelper.style(component, root_context)
             return if (exists!!) {
                 view = subviews!![index++]
-                JasonComponentFactory.Companion.build(view, component, parent, root_context)
+                JasonComponentFactory.Companion.build(view, component!!, parent, root_context)
                 view
             } else {
-                view = JasonComponentFactory.Companion.build(null, component, parent, root_context)
+                view = JasonComponentFactory.Companion.build(null, component!!, parent, root_context)
                 view.id = subviews!!.size
                 subviews!!.add(view)
                 view
             }
         }
 
-        private fun add_spacing(view: View, item: JSONObject, type: String) {
+        private fun add_spacing(view: View, item: JSONObject?, type: String) {
             try {
-                var spacing = "0"
+                //var spacing: String = "0"
                 val style = JasonHelper.style(item, root_context)
-                spacing = if (style.has("spacing")) {
+                val spacing: String = if (style.has("spacing")) {
                     style.getString("spacing")
                 } else {
                     "0"
                 }
                 if (type.equals("vertical", ignoreCase = true)) {
-                    val m = JasonHelper.pixels(context, spacing, item.getString("type")).toInt()
+                    val m =
+                        JasonHelper.pixels(context, spacing, item!!.getString("type")).toInt()
                     val layoutParams: LinearLayout.LayoutParams
                     layoutParams = if (view.layoutParams == null) {
                         LinearLayout.LayoutParams(0, 0)
@@ -674,8 +699,11 @@ class ItemAdapter(root_context: Context, context: Context, var items: ArrayList<
                     layoutParams.bottomMargin = 0
                     view.layoutParams = layoutParams
                 } else if (type.equals("horizontal", ignoreCase = true)) {
-                    val m = JasonHelper.pixels(root_context, spacing, item.getString("type"))
-                        .toInt()
+                    val m = JasonHelper.pixels(
+                        root_context,
+                        spacing,
+                        item!!.getString("type")
+                    ).toInt()
                     val layoutParams: LinearLayout.LayoutParams
                     layoutParams = if (view.layoutParams == null) {
                         LinearLayout.LayoutParams(0, 0)
@@ -688,7 +716,10 @@ class ItemAdapter(root_context: Context, context: Context, var items: ArrayList<
                 }
                 view.requestLayout()
             } catch (e: Exception) {
-                Log.d("Warning", e.stackTrace[0].methodName + " : " + e.toString())
+                Log.d(
+                    "Warning",
+                    e.stackTrace[0].methodName + " : " + e.toString()
+                )
             }
         }
     }
@@ -699,7 +730,7 @@ class ItemAdapter(root_context: Context, context: Context, var items: ArrayList<
 
     init {
         cloned_items = ArrayList()
-        cloned_items.addAll(items)
+        cloned_items.addAll(items!!)
         this.context = context
         this.root_context = root_context
     }

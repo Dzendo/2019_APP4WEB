@@ -1,25 +1,18 @@
 package site.app4web.app4web.Core
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
+import okhttp3.*
+import org.json.JSONObject
+import site.app4web.app4web.Core.JasonParser.JasonParserListener
 import site.app4web.app4web.Helper.JasonHelper
 import site.app4web.app4web.Launcher.Launcher
-import org.json.JSONObject
 import java.io.IOException
 import java.net.URI
-import java.util.ArrayList
 import java.util.concurrent.CountDownLatch
-import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
-import java.util.regex.Matcher
 import java.util.regex.Pattern
-import okhttp3.Call
-import okhttp3.Callback
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Response
 
 
 class JasonModel(var url: String?, intent: Intent?, var view: JasonViewActivity) {
@@ -67,7 +60,7 @@ class JasonModel(var url: String?, intent: Intent?, var view: JasonViewActivity)
         var url = url
         try {
             val request: Request
-            val builder = Builder()
+            val builder = Request.Builder()
 
             // SESSION HANDLING
             // ОБРАЩЕНИЕ СЕССИИ
@@ -204,7 +197,7 @@ class JasonModel(var url: String?, intent: Intent?, var view: JasonViewActivity)
             val remote_pattern_with_path = Pattern.compile(remote_pattern_with_path_str)
             val remote_with_path_matcher = remote_pattern_with_path.matcher(str_jason)
             str_jason =
-                remote_with_path_matcher.replaceAll("\"{{#include \\$root[\\\\\"$5\\\\\"].$3}}\": {}")
+                remote_with_path_matcher.replaceAll("\"{{#include \\root[\\\\\"$5\\\\\"].$3}}\": {}")
 
             // Exclude a pattern that starts with $ => will be handled by resolve_local_reference
             // Исключить шаблон, который начинается с $ =>, будет обработано resol_local_reference
@@ -212,20 +205,24 @@ class JasonModel(var url: String?, intent: Intent?, var view: JasonViewActivity)
             val remote_pattern_without_path = Pattern.compile(remote_pattern_without_path_str)
             val remote_without_path_matcher = remote_pattern_without_path.matcher(str_jason)
             str_jason =
-                remote_without_path_matcher.replaceAll("\"{{#include \\$root[\\\\\"$2\\\\\"]}}\": {}")
+                remote_without_path_matcher.replaceAll("\"{{#include \\root[\\\\\"$2\\\\\"]}}\": {}")
             val to_resolve = JSONObject(str_jason)
             refs!!.put("\$document", jason)
 
             // parse
             // разбирать
-            JasonParser.Companion.getInstance(view)!!
-                .setParserListener(JasonParserListener { resolved_jason ->
+
+            // parse
+            // разбирать
+            JasonParser.getInstance(view)!!.setParserListener(object : JasonParserListener {
+                override fun onFinished(resolved_jason: JSONObject?) {
                     try {
                         resolve_and_build(resolved_jason.toString())
-                    } catch (e: Exception) {
+                    } catch (e: java.lang.Exception) {
                         Log.d("Warning", e.stackTrace[0].methodName + " : " + e.toString())
                     }
-                })
+                }
+            })
             JasonParser.Companion.getInstance(view)!!.parse("json", refs, to_resolve, view)
         } catch (e: Exception) {
             Log.d("Warning", e.stackTrace[0].methodName + " : " + e.toString())
@@ -237,23 +234,27 @@ class JasonModel(var url: String?, intent: Intent?, var view: JasonViewActivity)
         // to "{{#include $root.$document.blah.blah}}": {}
         var str_jason = jason.toString()
         try {
-            val local_pattern_str = "\"[+@]\"[ ]*:[ ]*\"[ ]*(\\$document[^\"]*)\""
+            val local_pattern_str = "\"[+@]\"[ ]*:[ ]*\"[ ]*(\\document[^\"]*)\""
             val local_pattern = Pattern.compile(local_pattern_str)
             val local_matcher = local_pattern.matcher(str_jason)
-            str_jason = local_matcher.replaceAll("\"{{#include \\$root.$1}}\": {}")
+            str_jason = local_matcher.replaceAll("\"{{#include \\root.$1}}\": {}")
             val to_resolve = JSONObject(str_jason)
             refs!!.put("\$document", jason)
 
             // parse
             // разбирать
-            JasonParser.Companion.getInstance(view)!!
-                .setParserListener(JasonParserListener { resolved_jason ->
+
+            // parse
+            // разбирать
+            JasonParser.getInstance(view)!!.setParserListener(object : JasonParserListener {
+                override fun onFinished(resolved_jason: JSONObject?) {
                     try {
                         resolve_and_build(resolved_jason.toString())
-                    } catch (e: Exception) {
+                    } catch (e: java.lang.Exception) {
                         Log.d("Warning", e.stackTrace[0].methodName + " : " + e.toString())
                     }
-                })
+                }
+            })
             JasonParser.Companion.getInstance(view)!!.parse("json", refs, to_resolve, view)
         } catch (e: Exception) {
             Log.d("Warning", e.stackTrace[0].methodName + " : " + e.toString())

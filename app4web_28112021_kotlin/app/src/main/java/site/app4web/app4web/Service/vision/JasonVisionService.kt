@@ -79,7 +79,7 @@ class JasonVisionService(context: AppCompatActivity) {
             .build()
         detector.setProcessor(object : Detector.Processor<Barcode?> {
             override fun release() {}
-            override fun receiveDetections(detections: Detections<Barcode>) {
+            override fun receiveDetections(detections: Detector.Detections<Barcode?>) {
                 if (is_open) {
                     val detected_items = detections.detectedItems
                     if (detected_items.size() != 0) {
@@ -122,8 +122,8 @@ class JasonVisionService(context: AppCompatActivity) {
                 startCamera(context, surfaceHolder, side)
             }
 
-            override fun surfaceChanged(surfaceHolder: SurfaceHolder?, i: Int, i1: Int, i2: Int) {}
-            override fun surfaceDestroyed(surfaceHolder: SurfaceHolder?) {
+            override fun surfaceChanged(surfaceHolder: SurfaceHolder, i: Int, i1: Int, i2: Int) {}
+            override fun surfaceDestroyed(surfaceHolder: SurfaceHolder) {
                 stopCamera()
             }
         })
@@ -187,7 +187,7 @@ class JasonVisionService(context: AppCompatActivity) {
         context: AppCompatActivity,
         cameraId: Int
     ): Int {
-        val info = CameraInfo()
+        val info = Camera.CameraInfo()
         Camera.getCameraInfo(cameraId, info)
         val rotation = context.windowManager.defaultDisplay.rotation
         var degrees = 0
@@ -198,7 +198,7 @@ class JasonVisionService(context: AppCompatActivity) {
             Surface.ROTATION_270 -> degrees = 270
         }
         var result: Int
-        if (info.facing == CameraInfo.CAMERA_FACING_FRONT) {
+        if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
             result = (info.orientation + degrees) % 360
             result = (360 - result) % 360 // compensate the mirror
         } else {  // back-facing
@@ -208,8 +208,8 @@ class JasonVisionService(context: AppCompatActivity) {
     }
 
     companion object {
-        var FRONT = CameraInfo.CAMERA_FACING_FRONT
-        var BACK = CameraInfo.CAMERA_FACING_BACK
+        var FRONT = Camera.CameraInfo.CAMERA_FACING_FRONT
+        var BACK = Camera.CameraInfo.CAMERA_FACING_BACK
     }
 
     init {

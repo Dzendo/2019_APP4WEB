@@ -5,7 +5,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.graphics.Bitmap
@@ -19,51 +18,10 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.util.Base64
 import android.util.Log
-import android.view.Gravity
-import android.view.Menu
-import android.view.MenuItem
-import android.view.MotionEvent
-import android.view.SurfaceView
-import android.view.View
-import android.view.ViewTreeObserver
+import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.webkit.WebView
-import android.widget.FrameLayout
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.ProgressBar
-import android.widget.RelativeLayout
-import com.aurelhubert.ahbottomnavigation.AHBottomNavigation
-import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.resource.drawable.GlideDrawable
-import com.bumptech.glide.request.animation.GlideAnimation
-import com.bumptech.glide.request.target.SimpleTarget
-import site.app4web.app4web.Component.JasonComponentFactory
-import site.app4web.app4web.Component.JasonImageComponent
-import site.app4web.app4web.Helper.JasonHelper
-import site.app4web.app4web.Launcher.Launcher
-import site.app4web.app4web.Lib.JasonToolbar
-import site.app4web.app4web.Lib.MaterialBadgeTextView
-import site.app4web.app4web.R
-import site.app4web.app4web.Section.ItemAdapter
-import site.app4web.app4web.Service.agent.JasonAgentService
-import site.app4web.app4web.Service.vision.JasonVisionService
-import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration
-import org.json.JSONArray
-import org.json.JSONException
-import org.json.JSONObject
-import java.io.ByteArrayOutputStream
-import java.io.InputStream
-import java.lang.reflect.Constructor
-import java.lang.reflect.Method
-import java.nio.charset.StandardCharsets
-import java.util.ArrayList
-import java.util.HashMap
-import java.util.concurrent.CountDownLatch
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
@@ -73,7 +31,33 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.bumptech.glide.Glide.with
+import com.aurelhubert.ahbottomnavigation.AHBottomNavigation
+import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.drawable.GlideDrawable
+import com.bumptech.glide.request.animation.GlideAnimation
+import com.bumptech.glide.request.target.SimpleTarget
+import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration
+import org.json.JSONArray
+import org.json.JSONException
+import org.json.JSONObject
+import site.app4web.app4web.Component.JasonComponentFactory
+import site.app4web.app4web.Component.JasonImageComponent
+import site.app4web.app4web.Core.JasonParser.JasonParserListener
+import site.app4web.app4web.Helper.JasonHelper
+import site.app4web.app4web.Helper.JasonHelper.next
+import site.app4web.app4web.Launcher.Launcher
+import site.app4web.app4web.Lib.JasonToolbar
+import site.app4web.app4web.Lib.MaterialBadgeTextView
+import site.app4web.app4web.R
+import site.app4web.app4web.Section.ItemAdapter
+import site.app4web.app4web.Service.agent.JasonAgentService
+import site.app4web.app4web.Service.vision.JasonVisionService
+import java.io.ByteArrayOutputStream
+import java.nio.charset.StandardCharsets
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.Executors
 
 
 open class JasonViewActivity : AppCompatActivity(),
@@ -791,15 +775,13 @@ open class JasonViewActivity : AppCompatActivity(),
             model!!["state"] = data
             if (action is JSONArray) {
                 // resolve
-                JasonParser.Companion.getInstance(this)!!
-                    .setParserListener(JasonParser.JasonParserListener { reduced_action ->
-                        final_call(
-                            reduced_action,
-                            data,
-                            ev,
-                            context
-                        )
-                    })
+
+                // resolve
+                JasonParser.getInstance(this)!!.setParserListener(object : JasonParserListener {
+                    override fun onFinished(reduced_action: JSONObject?) {
+                        final_call(reduced_action, data, event, context)
+                    }
+                })
                 JasonParser.Companion.getInstance(this)!!
                     .parse("json", model!!.state, action, context)
             } else {
@@ -810,10 +792,10 @@ open class JasonViewActivity : AppCompatActivity(),
         }
     }
 
-    private fun final_call(
-        action: JSONObject?,
+    open fun final_call(
+        action: JSONObject,
         data: JSONObject,
-        event: JSONObject?,
+        event: JSONObject,
         context: Context
     ) {
         try {
@@ -825,7 +807,7 @@ open class JasonViewActivity : AppCompatActivity(),
 
             // Handle trigger first
             // Обрабатываем триггер первым
-            if (action!!.has("trigger")) {
+            if (action.has("trigger")) {
                 trigger(action, data, event, context)
             } else {
                 if (action.length() == 0) {
@@ -836,33 +818,33 @@ open class JasonViewActivity : AppCompatActivity(),
                 if (action.has("options")) {
                     // if action has options, we need to parse out the options first
                     val options = action["options"]
-                    JasonParser.Companion.getInstance(this)!!
-                        .setParserListener(JasonParser.JasonParserListener { parsed_options ->
+                    JasonParser.getInstance(this)!!.setParserListener(object : JasonParserListener {
+                        override fun onFinished(parsed_options: JSONObject?) {
                             try {
                                 val action_with_parsed_options = JSONObject(action.toString())
                                 action_with_parsed_options.put("options", parsed_options)
                                 exec(action_with_parsed_options, model!!.state, event, context)
-                            } catch (e: Exception) {
+                            } catch (e: java.lang.Exception) {
                                 Log.d("Warning", e.stackTrace[0].methodName + " : " + e.toString())
                             }
-                        })
-                    JasonParser.Companion.getInstance(this)!!
-                        .parse("json", model!!.state, options, context)
+                        }
+                    })
+                    JasonParser.getInstance(this)!!.parse("json", model!!.state, options, context)
                 } else {
                     // otherwise we can just call immediately
                     // в противном случае мы можем просто позвонить немедленно
                     exec(action, model!!.state, event, context)
                 }
             }
-        } catch (e: Exception) {
+        } catch (e: java.lang.Exception) {
             Log.d("Warning", e.stackTrace[0].methodName + " : " + e.toString())
         }
     }
 
-    private fun trigger(
-        action: JSONObject?,
+    open fun trigger(
+        action: JSONObject,
         data: JSONObject,
-        event: JSONObject?,
+        event: JSONObject,
         context: Context
     ) {
         /****************************************************************************************
@@ -935,23 +917,23 @@ open class JasonViewActivity : AppCompatActivity(),
         try {
 
             // construct options
-            if (action!!.has("options")) {
+            if (action.has("options")) {
                 val options = action["options"]
-                JasonParser.Companion.getInstance(this)!!
-                    .setParserListener(JasonParser.JasonParserListener { parsed_options ->
+                JasonParser.getInstance(this)!!.setParserListener(object : JasonParserListener {
+                    override fun onFinished(parsed_options: JSONObject?) {
                         try {
                             invoke_lambda(action, data, parsed_options, context)
-                        } catch (e: Exception) {
+                        } catch (e: java.lang.Exception) {
                             Log.d("Warning", e.stackTrace[0].methodName + " : " + e.toString())
                         }
-                    })
-                JasonParser.Companion.getInstance(this)!!
-                    .parse("json", model!!.state, options, context)
+                    }
+                })
+                JasonParser.getInstance(this)!!.parse("json", model!!.state, options, context)
             } else {
                 val options = JSONObject()
                 invoke_lambda(action, data, null, context)
             }
-        } catch (e: Exception) {
+        } catch (e: java.lang.Exception) {
             Log.d("Warning", e.stackTrace[0].methodName + " : " + e.toString())
         }
     }
@@ -1391,6 +1373,186 @@ open class JasonViewActivity : AppCompatActivity(),
         }
 
          */
+
+
+        /*
+
+        # Similar to `trigger` keyword, but with a few differences:
+        1. Trigger was just for one-off triggering and finish. Lambda waits until the subroutine returns and continues where it left off.
+        2. `trigger` was a keyword, but lambda itself is just another type of action. `{"type": "$lambda"}`
+        3. Lambda can pass arguments via `options`
+        # Аналогично ключевому слову trigger, но с некоторыми отличиями:
+        1. Триггер был только для одноразового запуска и финиша. Лямбда ждет, пока подпрограмма не вернется и продолжит с того места, где остановилась.
+        2. «триггер» был ключевым словом, но сама лямбда - просто еще один тип действия. `{" type ":" $ lambda "}`
+        3. Лямбда может передавать аргументы через `опции`
+
+        # How it works
+        1. Triggers another action by name
+        2. Waits for the subroutine to return via `$return.success` or `$return.error`
+        3. When the subroutine calls `$return.success`, continue executing from `success` action, using the return value from the subroutine
+        4. When the subroutine calls `$return.error`, continue executing from `error` action, using the return value from the subroutine
+        # Как это устроено
+        1. Запускает другое действие по имени
+        2. Ожидает возврата подпрограммы через `$ return.success` или` $ return.error`
+        3. Когда подпрограмма вызывает `$ return.success`, продолжайте выполнение из действия` success`, используя возвращаемое значение из подпрограммы.
+        4. Когда подпрограмма вызывает `$ return.error`, продолжайте выполнение из действия` error`, используя возвращаемое значение из подпрограммы.
+
+
+
+         Похож на ключевое слово `trigger`, но с некоторыми отличиями:
+         1. Триггер был только для одноразового запуска и финиша. Лямбда ждет, пока подпрограмма не вернется и продолжит с того места, где остановилась.
+         2. «триггер» был ключевым словом, но сама лямбда - просто еще один тип действия. `{" type ":" $ lambda "}`
+         3. Лямбда может передавать аргументы через `опции`
+
+         # Как это устроено
+         1. Запускает другое действие по имени
+         2. Ожидает возврата подпрограммы через `$ return.success` или` $ return.error`
+         3. Когда подпрограмма вызывает `$ return.success`, продолжайте выполнение из действия` success`, используя возвращаемое значение из подпрограммы.
+         4. Когда подпрограмма вызывает `$ return.error`, продолжайте выполнение из действия` error`, используя возвращаемое значение из подпрограммы.
+
+        # Example 1: Basic lambda (Same as trigger)
+        # Пример 1. Базовая лямбда (такая же, как триггер)
+        {
+            "type": "$lambda",
+            "options": {
+                "name": "fetch"
+            }
+        }
+
+
+        # Example 2: Basic lambda with success/error handlers
+        # Пример 2. Базовая лямбда с обработчиками успеха / ошибок
+        {
+            "type": "$lambda",
+            "options": {
+                "name": "fetch"
+            }
+            "success": {
+                "type": "$render"
+            },
+            "error": {
+                "type": "$util.toast",
+                "options": {
+                    "text": "Error"
+                }
+            }
+        }
+
+
+        # Example 3: Passing arguments
+        # Пример 3: передача аргументов
+        {
+            "type": "$lambda",
+            "options": {
+                "name": "fetch",
+                "options": {
+                    "url": "https://www.jasonbase.com/things/73g"
+                }
+            },
+            "success": {
+                "type": "$render"
+            },
+            "error": {
+                "type": "$util.toast",
+                "options": {
+                    "text": "Error"
+                }
+            }
+        }
+
+        # Example 4: Using the previous action's return value
+        # Пример 4. Использование возвращаемого значения предыдущего действия
+
+        {
+            "type": "$network.request",
+            "options": {
+                "url": "https://www.jasonbase.com/things/73g"
+            },
+            "success": {
+                "type": "$lambda",
+                "options": {
+                    "name": "draw"
+                },
+                "success": {
+                    "type": "$render"
+                },
+                "error": {
+                    "type": "$util.toast",
+                    "options": {
+                        "text": "Error"
+                    }
+                }
+            }
+        }
+
+        # Example 5: Using the previous action's return value as well as custom options
+        # Пример 5. Использование возвращаемого значения предыдущего действия, а также пользовательских параметров
+
+        {
+            "type": "$network.request",
+            "options": {
+                "url": "https://www.jasonbase.com/things/73g"
+            },
+            "success": {
+                "type": "$lambda",
+                "options": {
+                    "name": "draw",
+                    "options": {
+                        "p1": "another param",
+                        "p2": "yet another param"
+                    }
+                },
+                "success": {
+                    "type": "$render"
+                },
+                "error": {
+                    "type": "$util.toast",
+                    "options": {
+                        "text": "Error"
+                    }
+                }
+            }
+        }
+
+        # Example 6: Using the previous action's return value as well as custom options
+        # Пример 5. Использование возвращаемого значения предыдущего действия, а также пользовательских параметров
+
+        {
+            "type": "$network.request",
+            "options": {
+                "url": "https://www.jasonbase.com/things/73g"
+            },
+            "success": {
+                "type": "$lambda",
+                "options": [{
+                    "{{#if $jason}}": {
+                        "name": "draw",
+                        "options": {
+                            "p1": "another param",
+                            "p2": "yet another param"
+                        }
+                    }
+                }, {
+                    "{{#else}}": {
+                        "name": "err",
+                        "options": {
+                            "text": "No content to render"
+                        }
+                    }
+                }],
+                "success": {
+                    "type": "$render"
+                },
+                "error": {
+                    "type": "$util.toast",
+                    "options": {
+                        "text": "Error"
+                    }
+                }
+            }
+        }
+
+         */
         try {
             if (action.has("options")) {
                 val options = action.getJSONObject("options")
@@ -1409,8 +1571,8 @@ open class JasonViewActivity : AppCompatActivity(),
 
                     // take the options and parse it with current model.state
                     // взять параметры и проанализировать их с текущим model.state
-                    JasonParser.Companion.getInstance(this)!!
-                        .setParserListener(JasonParserListener { parsed_options ->
+                    JasonParser.getInstance(this)!!.setParserListener(object : JasonParserListener {
+                        override fun onFinished(parsed_options: JSONObject?) {
                             try {
                                 val wrapped = JSONObject()
                                 wrapped.put("\$jason", parsed_options)
@@ -1420,8 +1582,8 @@ open class JasonViewActivity : AppCompatActivity(),
                                     caller,
                                     this@JasonViewActivity
                                 )
-                            } catch (e: Exception) {
-                                JasonHelper.next(
+                            } catch (e: java.lang.Exception) {
+                                next(
                                     "error",
                                     action,
                                     JSONObject(),
@@ -1429,16 +1591,17 @@ open class JasonViewActivity : AppCompatActivity(),
                                     this@JasonViewActivity
                                 )
                             }
-                        })
-                    JasonParser.Companion.getInstance(this)!!
+                        }
+                    })
+                    JasonParser.getInstance(this)!!
                         .parse("json", model!!.state, new_options, context)
                 } else {
                     call(lambda.toString(), data.toString(), caller, this@JasonViewActivity)
                 }
             }
-        } catch (e: Exception) {
+        } catch (e: java.lang.Exception) {
             Log.d("Warning", e.stackTrace[0].methodName + " : " + e.toString())
-            JasonHelper.next("error", action, JSONObject(), JSONObject(), this@JasonViewActivity)
+            next("error", action, JSONObject(), JSONObject(), this@JasonViewActivity)
         }
     }
 
@@ -1543,11 +1706,12 @@ open class JasonViewActivity : AppCompatActivity(),
             val head = model!!.jason!!.getJSONObject("\$jason").getJSONObject("head")
             val templates = head.getJSONObject("templates")
             val template = templates.getJSONObject(template_name)
-            JasonParser.Companion.getInstance(this)!!
-                .setParserListener(JasonParserListener { body ->
+            JasonParser.getInstance(this)!!.setParserListener(object : JasonParserListener {
+                override fun onFinished(body: JSONObject?) {
                     setup_body(body)
-                    JasonHelper.next("success", action, JSONObject(), event, context)
-                })
+                    next("success", action, JSONObject(), event!!, context)
+                }
+            })
             JasonParser.Companion.getInstance(this)!!.parse(type, data, template, context)
         } catch (e: Exception) {
             Log.d("Warning", e.stackTrace[0].methodName + " : " + e.toString())
@@ -1935,7 +2099,7 @@ open class JasonViewActivity : AppCompatActivity(),
                             val background = bg
                             val c = JSONObject()
                             c.put("url", background)
-                            if (background.matches("(file|http[s]?):\\/\\/.*")) {
+                            if (background.matches("(file|http[s]?):\\/\\/.*".toRegex())) {
                                 if (backgroundImageView == null) {
                                     backgroundImageView = ImageView(this@JasonViewActivity)
                                 }
@@ -1943,7 +2107,7 @@ open class JasonViewActivity : AppCompatActivity(),
                                 var cacheStrategy = DiskCacheStrategy.RESULT
                                 // gif doesn't work with RESULT cache strategy
                                 // TODO: Check with Glide V4
-                                if (background.matches(".*\\.gif")) {
+                                if (background.matches(".*\\.gif".toRegex())) {
                                     cacheStrategy = DiskCacheStrategy.SOURCE
                                 }
                                 Glide.with(this@JasonViewActivity)
@@ -1956,7 +2120,7 @@ open class JasonViewActivity : AppCompatActivity(),
                                     .diskCacheStrategy(cacheStrategy)
                                     .centerCrop()
                                     .into(backgroundImageView)
-                            } else if (background.matches("data:image.*")) {
+                            } else if (background.matches("data:image.*".toRegex())) {
                                 val base64: String
                                 base64 = if (background.startsWith("data:image/jpeg")) {
                                     background.substring("data:image/jpeg;base64,".length)
@@ -1971,8 +2135,8 @@ open class JasonViewActivity : AppCompatActivity(),
                                 Glide.with(this@JasonViewActivity).load(bs)
                                     .into(object : SimpleTarget<GlideDrawable?>() {
                                         override fun onResourceReady(
-                                            resource: GlideDrawable,
-                                            glideAnimation: GlideAnimation<in GlideDrawable>
+                                            resource: GlideDrawable?,
+                                            glideAnimation: GlideAnimation<in GlideDrawable?>
                                         ) {
                                             sectionLayout!!.background = resource
                                         }
@@ -2013,13 +2177,13 @@ open class JasonViewActivity : AppCompatActivity(),
                                 // на андроиде нужно различать несколько веб-контейнеров по URL
                                 background.put("id", "\$webcontainer@" + model!!.url)
                                 val agentService =
-                                    (applicationContext as Launcher).services["JasonAgentService"] as JasonAgentService
+                                    (applicationContext as Launcher).services!!["JasonAgentService"] as JasonAgentService
                                 backgroundWebview = agentService.setup(
                                     this@JasonViewActivity,
                                     background,
                                     "\$webcontainer@" + model!!.url
                                 )
-                                backgroundWebview.setVisibility(View.VISIBLE)
+                                backgroundWebview!!.visibility = View.VISIBLE
                                 // not interactive by default;
                                 var responds_to_webview = false
                                 /**
@@ -2063,10 +2227,10 @@ open class JasonViewActivity : AppCompatActivity(),
                                 }
                                 if (responds_to_webview) {
                                     // webview receives click
-                                    backgroundWebview.setOnTouchListener(null)
+                                    backgroundWebview!!.setOnTouchListener(null)
                                 } else {
                                     // webview shouldn't receive click
-                                    backgroundWebview.setOnTouchListener(OnTouchListener { v, event -> true })
+                                    backgroundWebview!!.setOnTouchListener { v, event -> true }
                                 }
                                 backgroundCurrentView = backgroundWebview
                             } else if (type.equals("camera", ignoreCase = true)) {
@@ -2093,8 +2257,9 @@ open class JasonViewActivity : AppCompatActivity(),
 
                             // Update Layout after the rootLayout has finished rendering in order to change the background dimension
                             // Обновляем Layout после завершения рендеринга rootLayout, чтобы изменить размер фона
-                            rootLayout!!.viewTreeObserver.addOnGlobalLayoutListener(object :
-                                OnGlobalLayoutListener {
+                            rootLayout!!.viewTreeObserver
+                                .addOnGlobalLayoutListener(object :
+                                    ViewTreeObserver.OnGlobalLayoutListener {
                                 override fun onGlobalLayout() {
                                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                                         rootLayout!!.viewTreeObserver.removeOnGlobalLayoutListener(
@@ -2139,7 +2304,7 @@ open class JasonViewActivity : AppCompatActivity(),
                     }
                 }
                 rootLayout!!.viewTreeObserver.addOnGlobalLayoutListener(object :
-                    OnGlobalLayoutListener {
+                    ViewTreeObserver.OnGlobalLayoutListener {
                     override fun onGlobalLayout() {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                             rootLayout!!.viewTreeObserver.removeOnGlobalLayoutListener(this)
@@ -2545,8 +2710,8 @@ open class JasonViewActivity : AppCompatActivity(),
                             .asBitmap()
                             .into(object : SimpleTarget<Bitmap?>(100, 100) {
                                 override fun onResourceReady(
-                                    resource: Bitmap,
-                                    glideAnimation: GlideAnimation<*>?
+                                    resource: Bitmap?,
+                                    glideAnimation: GlideAnimation<in Bitmap?>?
                                 ) {
                                     val tab_item = bottomNavigation!!.getItem(i)
                                     bottomNavigationItems!![Integer.valueOf(i)] = tab_item
@@ -2589,8 +2754,8 @@ open class JasonViewActivity : AppCompatActivity(),
                             .asBitmap()
                             .into(object : SimpleTarget<Bitmap?>(100, 100) {
                                 override fun onResourceReady(
-                                    resource: Bitmap,
-                                    glideAnimation: GlideAnimation<*>?
+                                    resource: Bitmap?,
+                                    glideAnimation: GlideAnimation<in Bitmap?>?
                                 ) {
                                     var text: String? = ""
                                     try {
@@ -3014,7 +3179,7 @@ open class JasonViewActivity : AppCompatActivity(),
                         )
                         //layoutParams.gravity = Gravity.RIGHT | Gravity.TOP;
                         var left = JasonHelper.pixels(this, 30.toString(), "horizontal").toInt()
-                        var top = JasonHelper.pixels(this, -3.toString(), "vertical").toInt()
+                        var top = JasonHelper.pixels(this, (-3).toString(), "vertical").toInt()
                         if (badge_style.has("left")) {
                             left = JasonHelper.pixels(
                                 this,
@@ -3240,7 +3405,7 @@ open class JasonViewActivity : AppCompatActivity(),
      * добавляется только первый слушатель.
      * @param listener
      */
-    fun addListViewOnItemTouchListener(listener: OnItemTouchListener) {
+    fun addListViewOnItemTouchListener(listener: RecyclerView.OnItemTouchListener) {
         if (!listViewOnItemTouchListeners!!.contains(listener)) {
             listViewOnItemTouchListeners!!.add(listener)
             listView!!.addOnItemTouchListener(listener)

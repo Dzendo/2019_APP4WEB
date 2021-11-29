@@ -38,11 +38,11 @@ open class JasonComponent {
                     height = RelativeLayout.LayoutParams.WRAP_CONTENT.toFloat()
                     if (style.has("height")) {
                         try {
-                            height = JasonHelper.pixels(
+                            height = (JasonHelper.pixels(
                                 root_context,
                                 style.getString("height"),
                                 "vertical"
-                            ) as Int.toFloat()
+                            ) as Int).toFloat()
                             if (style.has("ratio")) {
                                 val ratio = JasonHelper.ratio(style.getString("ratio"))
                                 width = height * ratio
@@ -53,11 +53,11 @@ open class JasonComponent {
                     }
                     if (style.has("width")) {
                         try {
-                            width = JasonHelper.pixels(
+                            width = (JasonHelper.pixels(
                                 root_context,
                                 style.getString("width"),
                                 "horizontal"
-                            ) as Int.toFloat()
+                            ) as Int).toFloat()
                             if (style.has("ratio")) {
                                 val ratio = JasonHelper.ratio(style.getString("ratio"))
                                 height = width / ratio

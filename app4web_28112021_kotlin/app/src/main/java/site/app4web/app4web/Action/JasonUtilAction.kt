@@ -2,20 +2,13 @@ package site.app4web.app4web.Action
 
 import android.app.Dialog
 import android.app.TimePickerDialog
-import android.content.ContentResolver
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
-import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.provider.ContactsContract
-import com.google.android.material.snackbar.Snackbar
-import androidx.fragment.app.DialogFragment
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import androidx.appcompat.app.AlertDialog
 import android.text.InputType
 import android.text.format.DateFormat
 import android.util.Base64
@@ -25,15 +18,19 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TimePicker
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.DialogFragment
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.github.florent37.singledateandtimepicker.dialog.SingleDateAndTimePickerDialog
-import site.app4web.app4web.Core.JasonViewActivity
-import site.app4web.app4web.Helper.JasonHelper
-import site.app4web.app4web.Helper.JasonImageHelper
+import com.google.android.material.snackbar.Snackbar
 import org.json.JSONArray
 import org.json.JSONObject
-import java.util.ArrayList
-import java.util.Calendar
-import java.util.Date
+import site.app4web.app4web.Core.JasonViewActivity
+import site.app4web.app4web.Helper.JasonHelper
+import site.app4web.app4web.Helper.JasonHelper.next
+import site.app4web.app4web.Helper.JasonImageHelper
+import site.app4web.app4web.Helper.JasonImageHelper.JasonImageDownloadListener
+import java.util.*
 
 
 class JasonUtilAction {
@@ -237,7 +234,7 @@ class JasonUtilAction {
         }
     }
 
-    class TimePickerFragment : DialogFragment(), OnTimeSetListener {
+    class TimePickerFragment : DialogFragment(), TimePickerDialog.OnTimeSetListener {
         override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
             // Use the current time as the default values for the picker
             // Использовать текущее время в качестве значений по умолчанию для выбора
@@ -390,12 +387,9 @@ class JasonUtilAction {
                                 }
                                 counter++
                                 if (counter == l) {
-                                    JasonHelper.next(
-                                        "success",
-                                        action,
-                                        JSONObject(),
-                                        event,
-                                        context
+                                    next(
+                                        "success", action, JSONObject(),
+                                        event!!, context
                                     )
                                     context.startActivity(
                                         Intent.createChooser(
@@ -415,58 +409,62 @@ class JasonUtilAction {
                                 // Поделиться URL
                                 if (item.has("url")) {
                                     val helper = JasonImageHelper(item.getString("url"), context)
-                                    helper.setListener { data1: ByteArray?, uri: Uri? ->
-                                        callback_intent!!.putExtra(Intent.EXTRA_STREAM, uri)
-                                        // override with image type if one of the items is an image
-                                        callback_intent!!.type = "image/*"
-                                        callback_intent!!.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                                        counter++
-                                        if (counter == l) {
-                                            JasonHelper.next(
-                                                "success",
-                                                action,
-                                                JSONObject(),
-                                                event,
-                                                context
-                                            )
-                                            context.startActivity(
-                                                Intent.createChooser(
-                                                    callback_intent,
-                                                    "Share"
+                                    helper.setListener(object : JasonImageDownloadListener {
+                                        override fun onLoaded(data: ByteArray?, uri: Uri?) {
+                                            callback_intent!!.putExtra(Intent.EXTRA_STREAM, uri)
+                                            // override with image type if one of the items is an image
+                                            callback_intent!!.type = "image/*"
+                                            callback_intent!!.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                                            counter++
+                                            if (counter == l) {
+                                                next(
+                                                    "success",
+                                                    action,
+                                                    JSONObject(),
+                                                    event!!,
+                                                    context
                                                 )
-                                            )
+                                                context.startActivity(
+                                                    Intent.createChooser(
+                                                        callback_intent,
+                                                        "Share"
+                                                    )
+                                                )
+                                            }
                                         }
-                                    }
+                                    })
                                     helper.fetch()
                                 } else if (item.has("data")) {
                                     // "data" is a byte[] stored as string
                                     // so we need to restore it back to byte[] before working with it.
                                     // "data" - это byte [], хранящийся в виде строки
                                     // поэтому мы должны восстановить его обратно в byte [] перед началом работы с ним.
-                                    val d = Base64.decode(item.getString("data"), Base64.DEFAULT)
+                                    val d = Base64.decode(
+                                        item.getString("data"),
+                                        Base64.DEFAULT
+                                    )
                                     val helper = JasonImageHelper(d, context)
-                                    helper.setListener { data12: ByteArray?, uri: Uri? ->
-                                        callback_intent!!.putExtra(Intent.EXTRA_STREAM, uri)
-                                        // override with image type if one of the items is an image
-                                        callback_intent!!.type = "image/*"
-                                        callback_intent!!.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                                        counter++
-                                        if (counter == l) {
-                                            JasonHelper.next(
-                                                "success",
-                                                action,
-                                                JSONObject(),
-                                                event,
-                                                context
-                                            )
-                                            context.startActivity(
-                                                Intent.createChooser(
-                                                    callback_intent,
-                                                    "Share"
+                                    helper.setListener(object : JasonImageDownloadListener {
+                                        override fun onLoaded(data: ByteArray?, uri: Uri?) {
+                                            callback_intent!!.putExtra(Intent.EXTRA_STREAM, uri)
+                                            // override with image type if one of the items is an image
+                                            callback_intent!!.type = "image/*"
+                                            callback_intent!!.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                                            counter++
+                                            if (counter == l) {
+                                                next(
+                                                    "success", action, JSONObject(),
+                                                    event!!, context
                                                 )
-                                            )
+                                                context.startActivity(
+                                                    Intent.createChooser(
+                                                        callback_intent,
+                                                        "Share"
+                                                    )
+                                                )
+                                            }
                                         }
-                                    }
+                                    })
                                     helper.load()
                                 }
                             } else if (type.equals("video", ignoreCase = true)) {
@@ -478,12 +476,9 @@ class JasonUtilAction {
                                     callback_intent!!.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                                     counter++
                                     if (counter == l) {
-                                        JasonHelper.next(
-                                            "success",
-                                            action,
-                                            JSONObject(),
-                                            event,
-                                            context
+                                        next(
+                                            "success", action, JSONObject(),
+                                            event!!, context
                                         )
                                         context.startActivity(
                                             Intent.createChooser(
@@ -501,12 +496,9 @@ class JasonUtilAction {
                                     callback_intent!!.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                                     counter++
                                     if (counter == l) {
-                                        JasonHelper.next(
-                                            "success",
-                                            action,
-                                            JSONObject(),
-                                            event,
-                                            context
+                                        next(
+                                            "success", action, JSONObject(),
+                                            event!!, context
                                         )
                                         context.startActivity(
                                             Intent.createChooser(
@@ -520,7 +512,7 @@ class JasonUtilAction {
                         }
                     }
                 }
-            } catch (e: Exception) {
+            } catch (e: java.lang.Exception) {
                 Log.d("Warning", e.stackTrace[0].methodName + " : " + e.toString())
             }
         }.start()

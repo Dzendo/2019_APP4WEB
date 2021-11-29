@@ -5,7 +5,7 @@ import com.google.api.client.http.javanet.NetHttpTransport
 import com.google.api.client.json.jackson2.JacksonFactory
 import com.google.api.services.customsearch.Customsearch
 import com.google.api.services.customsearch.CustomsearchRequestInitializer
-import site.app4web.app4web.Launcher.Launcher.setting
+import site.app4web.app4web.Launcher.Launcher.Companion.setting
 
 
 /* Обращается к Google Search для поиска передаваемой строки

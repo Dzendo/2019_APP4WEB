@@ -59,7 +59,7 @@ class JasonRequire(
 
     private fun remote() {
         val request: Request
-        val builder = Builder()
+        val builder = Request.Builder()
 
         // Session Handling
         // Обработка сессии

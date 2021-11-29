@@ -30,7 +30,7 @@ class JasonPushAction {
                 (Launcher.Companion.currentContext as JasonViewActivity).simple_trigger(
                     "\$push.onregister",
                     response,
-                    Launcher.Companion.currentContext
+                    Launcher.Companion.currentContext as JasonViewActivity
                 )
             } catch (e: Exception) {
                 Log.d("Warning", e.stackTrace[0].methodName + " : " + e.toString())

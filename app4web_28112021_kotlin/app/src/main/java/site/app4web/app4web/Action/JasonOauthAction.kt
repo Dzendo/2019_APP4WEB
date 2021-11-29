@@ -3,35 +3,22 @@ package site.app4web.app4web.Action
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.net.Uri
 import android.os.AsyncTask
 import android.util.Log
 import com.github.scribejava.core.builder.ServiceBuilder
 import com.github.scribejava.core.builder.api.DefaultApi10a
 import com.github.scribejava.core.builder.api.DefaultApi20
-import com.github.scribejava.core.model.OAuth1AccessToken
-import com.github.scribejava.core.model.OAuth1RequestToken
-import com.github.scribejava.core.model.OAuth2AccessToken
-import com.github.scribejava.core.model.OAuthRequest
+import com.github.scribejava.core.model.*
 import com.github.scribejava.core.model.Response
-import com.github.scribejava.core.model.Verb
-import com.github.scribejava.core.oauth.OAuth10aService
-import com.github.scribejava.core.oauth.OAuth20Service
-import site.app4web.app4web.Helper.JasonHelper
-import site.app4web.app4web.Launcher.Launcher
+import okhttp3.*
 import org.json.JSONException
 import org.json.JSONObject
+import site.app4web.app4web.Helper.JasonHelper
+import site.app4web.app4web.Helper.JasonHelper.dispatchIntent
+import site.app4web.app4web.Launcher.Launcher
 import java.io.IOException
 import java.nio.charset.Charset
-import java.util.HashMap
-import okhttp3.Authenticator
-import okhttp3.Call
-import okhttp3.Callback
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.RequestBody
-import okhttp3.Route
 
 class JasonOauthAction {
     @SuppressLint("StaticFieldLeak")
@@ -94,7 +81,7 @@ class JasonOauthAction {
                         .callback(callback_uri)
                         .build(oauthApi)
                     object : AsyncTask<String?, Void?, Void?>() {
-                        protected override fun doInBackground(vararg params: String): Void? {
+                        protected override fun doInBackground(vararg params: String?): Void? {
                             try {
                                 val client_id = params[0]
                                 val request_token = oauthService.requestToken
@@ -110,7 +97,7 @@ class JasonOauthAction {
                                 val callback = JSONObject()
                                 callback.put("class", "JasonOauthAction")
                                 callback.put("method", "oauth_callback")
-                                JasonHelper.dispatchIntent(
+                                dispatchIntent(
                                     "oauth",
                                     action,
                                     data,
@@ -119,7 +106,7 @@ class JasonOauthAction {
                                     intent,
                                     callback
                                 )
-                            } catch (e: Exception) {
+                            } catch (e: java.lang.Exception) {
                                 handleError(e, action, event, context)
                             }
                             return null
@@ -197,7 +184,7 @@ class JasonOauthAction {
                             }
                         }
                         object : AsyncTask<String?, Void?, Void?>() {
-                            protected override fun doInBackground(vararg params: String): Void? {
+                            protected override fun doInBackground(vararg params: String?): Void? {
                                 try {
                                     val username = params[0]
                                     val password = params[1]
@@ -419,7 +406,7 @@ class JasonOauthAction {
                         .apiSecret(client_secret)
                         .build(oauthApi)
                     object : AsyncTask<String?, Void?, Void?>() {
-                        protected override fun doInBackground(vararg params: String): Void? {
+                        protected override fun doInBackground(vararg params: String?): Void? {
                             try {
                                 val preferences =
                                     context.getSharedPreferences("oauth", Context.MODE_PRIVATE)
@@ -536,12 +523,12 @@ class JasonOauthAction {
                 }
                 var client: OkHttpClient? = null
                 client = if (access_options.has("basic") && access_options.getBoolean("basic")) {
-                    val b = Builder()
+                    val b = OkHttpClient.Builder()
                     b.authenticator(Authenticator { route, response ->
                         if (response.request.header("Authorization") != null) {
                             return@Authenticator null
                         }
-                        val credential = basic(client_id, client_secret)
+                        val credential = okhttp3.Credentials.basic(client_id, client_secret)
                         response.request.newBuilder().header("Authorization", credential).build()
                     })
                     b.build()
@@ -551,7 +538,7 @@ class JasonOauthAction {
                     (context.applicationContext as Launcher).getHttpClient(0)
                 }
                 val request: Request
-                val requestBuilder: Builder = Builder()
+                val requestBuilder: Request.Builder = Request.Builder()
                     .url(uri_builder.build().toString())
                     .method("POST", RequestBody.create(null, ByteArray(0)))
                 request = requestBuilder.build()
@@ -561,7 +548,7 @@ class JasonOauthAction {
                     }
 
                     @Throws(IOException::class)
-                    override fun onResponse(call: Call, response: Response) {
+                    override fun onResponse(call: Call, response: okhttp3.Response) {
                         try {
                             val jsonResponse = JSONObject(
                                 response.body!!.source().readString(
@@ -710,7 +697,7 @@ class JasonOauthAction {
                         request
                     )
                     object : AsyncTask<Void?, Void?, Void?>() {
-                        protected override fun doInBackground(vararg voids: Void): Void? {
+                        protected override fun doInBackground(vararg params: Void?): Void? {
                             try {
                                 val response = oauthService.execute(request)
                                 if (response.code == 200) {
@@ -748,7 +735,7 @@ class JasonOauthAction {
                     val oauthService = serviceBuilder.build(oauthApi)
                     oauthService.signRequest(OAuth2AccessToken(access_token), request)
                     object : AsyncTask<Void?, Void?, Void?>() {
-                        protected override fun doInBackground(vararg voids: Void): Void? {
+                        protected override fun doInBackground(vararg voids: Void?): Void? {
                             try {
                                 val response = oauthService.execute(request)
                                 if (response.code == 200) {

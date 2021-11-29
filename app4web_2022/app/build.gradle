@@ -1,0 +1,235 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-android-extensions'
+    // kotlin-parcelize
+    id 'com.google.gms.google-services'
+    id 'androidx.navigation.safeargs'
+}
+
+android {
+    compileSdkVersion 31
+    buildToolsVersion '31.0.0'
+   // ndkVersion '21.1.6363665 rc3'
+    //ndkVersion '21.0.6113669'
+    defaultConfig {
+        applicationId "site.app4web.app4web"
+        minSdkVersion 22
+        targetSdkVersion 30
+        versionCode 3
+        versionName "0.1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+    }
+    buildTypes {
+        release {
+            debuggable false
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    lintOptions {
+        disable "ResourceType"
+    }
+    productFlavors {
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    // Temporary fix until alpha10 for what??
+    packagingOptions {
+        exclude 'META-INF/proguard/androidx-annotations.pro'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/ASL2.0'
+    }
+
+}
+// Версия от 01.09.2019 05:00
+dependencies {
+    //implementation fileTree(include: ['*.jar'], dir: 'libs')
+    //implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"  // not need
+    //implementation 'androidx.appcompat:appcompat:1.1.0-rc01'  //  not need
+    //implementation 'androidx.core:core-ktx:1.2.0-alpha03'  //  not need
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.2'
+    //implementation 'androidx.recyclerview:recyclerview:1.1.0-beta03' //  not need
+    //implementation 'com.google.android.material:material:1.2.0'
+    implementation 'com.google.android.material:material:1.4.0'
+
+    // STANDART FAB
+    //implementation 'androidx.multidex:multidex:2.0.1'    // >64K DEX  //  not need
+    //implementation 'androidx.legacy:legacy-support-core-ui:1.0.0' //  not need
+    //  implementation 'androidx.legacy:legacy-support-v4:1.0.0'  //  not need отлючена
+    //implementation 'org.apache.commons:commons-lang3:3.9'   //3.8.1 --> 3.9   //  not need
+    // Apache Commons lang -Доп методы Java util
+
+    // 2 - site.app4web.app4web.UI.Adapter.kt
+    implementation 'com.squareup.picasso:picasso:2.5.2'  //  2.5.2 STOP --XX--> 2.71828
+    //implementation 'com.squareup.picasso:picasso:2.71828'  //  2.5.2 STOP --XX--> 2.71828
+    // Picasso.with(context) нет whith Adapter.kt
+    //implementation 'com.squareup.picasso:picasso:2.71828'  //  2.5.2 STOP --XX--> 2.71828
+
+    // 4 - site.app4web.app4web.UI.RV_Gorizont
+    // 2 - site.app4web.app4web.UI.RV_Gorizont
+    // 5 - site.app4web.app4web.UI.Setting
+    implementation 'com.google.code.gson:gson:2.8.9'
+    // 10 - site.app4web.app4web.UI.Poisk.Poisk
+    //implementation 'com.google.apis:google-api-services-customsearch:v1-rev20181001-1.30.1'  //  v1-rev20181001-1.28.0 --XX--> v1-rev20181001-1.30.1
+    implementation 'com.google.apis:google-api-services-customsearch:v1-rev20200504-1.30.9' //v1-rev20210918-1.32.1
+    //implementation 'com.google.apis:google-api-services-customsearch:v1-rev20200917-1.31.5' // XX v1-rev20210918-1.32.1 (Sep 21, 2021)
+   // implementation 'com.google.apis:google-api-services-customsearch:v1-rev20200917-1.30.10'  // Вроде работает 78 v1-rev78-1.25.0
+    //implementation 'com.google.apis:google-api-services-customsearch:v1-rev20200917-1.31.0'
+    // v1-rev20200917-1.31.0    v1-rev20200917-1.30.10  customsearch:v1-rev20200504-1.30.9
+    //  v1-rev20181001-1.28.0 --XX--> v1-rev20181001-1.30.1  1-rev86-1.25.0  18 апреля 2020 нет
+    // перепутаны номера версий и AS предлагает более старую 74 и jre- последняя июнь 2019 1,30,1
+    // для GoogleSearch v1-rev74-1.25.0  v1-rev20200504-1.30.9 (13 мая 2020 года)
+    //implementation 'com.google.guava:guava:28.1-android'  //  not need ?? // 28.1-android Aug, 2019 -XX-> 28.1-jre
+    // Не совсем ясно зачем нужна эта guava ???? вроде и без него транслируется вроде для  Google Search
+
+    // для FireBase и Admob
+    //implementation 'com.google.firebase:firebase-core:17.2.0'  //  not need ??
+    // 2 - activity_main.xml
+    implementation 'com.google.firebase:firebase-ads:19.8.0'  // 18.1.1 ; 18.3.0 19.1.0 09.2020 19.3.0
+    //implementation 'com.google.firebase:firebase-ads:20.5.0'  // 18.1.1 ; 18.3.0 19.1.0 09.2020 19.3.0 XX
+    // 4 - site.app4web.app4web.ExampleUnitTest
+    testImplementation 'junit:junit:4.13.2'  // 4.12  -- > 4.13-beta-3
+    //androidTestImplementation 'androidx.test.ext:junit:1.1.2-alpha02' //1.1.1 -- > 1.1.2-alpha02
+    androidTestImplementation 'androidx.test:runner:1.4.0'  // need site.app4web.app4web.ExampleInstrumentedTest
+    //androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0' //  not need ??
+
+
+    //testImplementation 'junit:junit:4.13-beta-3'
+    //androidTestImplementation 'androidx.test.ext:junit:1.1.2-alpha02'
+    //androidTestImplementation 'androidx.test:runner:1.2.0-beta01' deprecate 3.4 взял из 3.5
+    //androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0-alpha02'
+
+
+
+    // Stetho - это сложный отладочный мост для приложений Android.
+    // просто запустите свое приложение и наведите указатель мыши
+    // Наберите в chrome://inspect. Нажмите кнопку «Осмотреть», чтобы начать.
+    // 5 - site.app4web.app4web.Launcher.DebugLauncher
+    // 18 - site.app4web.app4web.Launcher.ConfigurableStethoTree
+    debugImplementation 'com.facebook.stetho:stetho-okhttp3:1.5.1'  // Mar 18, 2019
+
+    // Карты Гугл
+    // 37 - site.app4web.app4web.Component.JasonMapComponent
+    //implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'com.google.android.gms:play-services-maps:18.0.0'
+    // Google Cloud Messaging
+    // Mobile Vision API имеет детекторы, которые позволяют находить объекты на фотографиях и видео.
+    //Это обучение поможет вам установить пример приложения для Android,
+    // которое будет распознавать лица на фотографиях в режиме реального времени.
+    // 11 - site.app4web.app4web.Service.vision.JasonVisionService
+    implementation 'com.google.android.gms:play-services-vision:20.1.3'  // 20.0.0 09.2020
+
+    // Для Firebase - Нужно регистрировать пакет Генерировать JSON Добавлять Meta в Manifest
+    // Firebase Cloud Messaging (FCM) - это кроссплатформенное решение для обмена сообщениями,
+    // которое позволяет вам надежно доставлять сообщения бесплатно.
+    // no 2 - site.app4web.app4web.Action.JasonPushAction;
+    // 5 now 2-site.app4web.app4web.Service.push.JasonPushMessageService
+    // no  2- site.app4web.app4web.Service.push.JasonPushRegisterService
+    // закоментарено JasonPushRegisterService  iid.FirebaseInstanceIdService
+    implementation 'com.google.firebase:firebase-messaging:21.0.1'  // 20.2.0 09.2020
+    //implementation 'com.google.firebase:firebase-messaging:23.0.0'  // XX
+    // implementation 'com.google.firebase:firebase-messaging:20.1.0'
+
+    // Клиент HTTP & HTTP / 2 для приложений Android и Java
+    // 15 - site.app4web.app4web.Service.websocket.JasonWebsocketService
+    //implementation 'com.squareup.okhttp3:okhttp:4.1.0'  // Aug 12, 2019
+    //implementation 'com.squareup.okhttp3:okhttp:4.2.2'  // Окт 02, 2019
+    //implementation 'com.squareup.okhttp3:okhttp:4.8.0'  // 	(Jan 07, 2020)
+    implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.3'  // 	(Jan 07, 2020)
+    //    // рассмотреть стандарт google-service - может то же самое
+
+    //  с GSON и XML rest
+    // Glide поддерживает извлечение, декодирование и отображение
+    // видеосюжетов, изображений и анимированных GIF-файлов
+    // Основная задача Glide - сделать прокрутку любого списка изображений максимально плавной и быстрой,
+    // но Glide также эффективен практически в любом случае, когда вам нужно извлечь,
+    // изменить размер и отобразить удаленное изображение.
+    // 24-JasonImageComponent;
+    // 18-JasonViewActivity;
+    // 2-JasonToolbar;
+    // 15-ItemAdapter;
+    // 11-JasonImageHelper
+    // 2 - site.app4web.app4web.Launcher.Launcher
+    implementation 'com.github.bumptech.glide:glide:3.7.0'    // Jan 24, 2016 3.7.0 stop --XX--> 4.9.0 Feb, 2019 4.11.0 XX
+    //implementation 'com.github.bumptech.glide:glide:4.11.0'   // 	(Jan 08, 2020) не транслируется  XX
+    // Jan 24, 2016 3.7.0 stop --XX--> 4.9.0 Feb, 2019
+    // 35 error: cannot find symbol class GlideDrawable во многих модулях при подъеме
+    // error: package com.bumptech.glide.request.animation does not exist
+    //implementation 'com.github.bumptech.glide:glide:4.9.0'  // Cause: invalid type code: 34
+    // 11 errors - Эта строчка снижает c 35 до 11 при подъеме 4.9.0
+    //annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'  //  not need for 3.7.0 отключена
+
+    // JavaScript-движок, двигатель V8. это набор привязок Java для V8
+    //Он был разработан для внедрения высокоэффективных JavaScript для Android
+    // 30 - site.app4web.app4web.Action.JasonConvertAction;
+    // 13  - seed\Core\JasonParser.java
+    //implementation 'com.eclipsesource.j2v8:j2v8:5.0.103@aar'  // Apr 29, 2019
+    //implementation 'com.eclipsesource.j2v8:j2v8:6.1.0@aar'  // feb 09, 2020
+    //implementation 'com.eclipsesource.j2v8:j2v8:6.2.0@aar'  // feb 09, 2021
+    implementation 'com.eclipsesource.j2v8:j2v8:6.2.1@aar'  // 	(Aug 10, 2021)
+
+    // Библиотека для воспроизведения поведения нижних навигационных указаний из Material Design.
+    // Библиотека для реализации компонента «Нижняя навигация» из рекомендаций по проектированию материалов
+    // 22 - site.app4web.app4web.Core.JasonViewActivity
+    implementation 'com.aurelhubert:ahbottomnavigation:2.3.4'    // Jan 02, 2019 2.3.4
+
+    // simple OAuth / OAuth2 client Java lib. Configuring ScribeJava is so easy
+    // 25-50 - site.app4web.app4web.Action.JasonOauthAction  // stop 4.0.0
+    implementation 'com.github.scribejava:scribejava-apis:4.0.0'  // Jan, 2017 4.0.0 --XX--> stop 6.8.1 Aug, 2019
+    //implementation 'com.github.scribejava:scribejava-apis:6.9.0'  // не транслируется 	(Oct 04, 2019) XX
+    // Jan, 2017 4.0.0 --XX--> stop 6.8.1 Aug, 2019
+    //    6 error not ServiceBuilder() must be -->   ServiceBuilder(String);
+    //    2 error serviceBuilder.scope - private ; 2 error serviceBuilder.state not found
+    //implementation 'com.github.scribejava:scribejava-apis:6.8.1'  // 4.0.0 --XX--> stop 6.8.1
+    //implementation 'com.github.scribejava:scribejava-apis:6.5.1'  // надо правильно указать APIkey DefaultApi10a
+
+    // Android библиотека обеспечивает простой способ управления делителя элементов RecyclerView 3-4 года
+    //  3 - site.app4web.app4web.Core.JasonViewActivity
+    implementation 'com.yqritc:recyclerview-flexibledivider:1.4.0'
+    // Jul 01, 2016 !!!! СТАРЬЕ --> в стандарт recyclerview
+
+    // Библиотека для работы с камерой от s3.amazonaws.com/repo.commonsware.com
+    // Съемка с использованием стороннего приложения достаточно прост,
+    // используя ACTION_IMAGE_CAPTURE и ACTION_VIDEO_CAPTURE deprecate
+    // 8-16 -  site.app4web.app4web.Action.JasonMediaAction   всего 300 строк java
+    implementation 'com.commonsware.cwac:cam2:0.7.6'   // примерно 2016 год где лежит не нашел
+    // Надо отказываться в пользу стандарта
+
+    // Fancy Audio recorder для Android. Он поддерживает WAV формат 48kHz.   adrielcafe
+    // 4-8 - site.app4web.app4web.Action.JasonAudioAction всего 230 строк java
+    implementation 'com.github.maks:AndroidAudioRecorder:0.3.0-jasonette'    // spec versions!!!
+    // В ГитХаб лежит от Sep 02, 2017 AndroidAudioRecorder:0.3.0 от Group: GitHub Adrielcafe с исх
+    // Maks из fork от Adrielcafe сделал AndroidAudioRecorder:0.3.0-jasonette - тексты закрыл
+    // последняя от Макса вроде Dec 12, 2018
+    // Надо отказываться в пользу стандарта
+
+    //SingleDateAndTimePicker
+    //You can now select a date and a time with only one widget !
+    // 2-3 - site.app4web.app4web.Action.JasonUtilAction
+    implementation 'com.github.florent37:singledateandtimepicker:2.1.4'
+    // Nov 15, 2018 2.1.2  -- > Mar 19, 2019 2.1.4
+
+    //This is a logger with a small, extensible API DebugTree
+    // 6 - site.app4web.app4web.Action.JasonAudioAction
+    // 2 - site.app4web.app4web.Action.JasonNetworkAction
+    // 9 - site.app4web.app4web.Component.JasonMapComponent
+    // 13 - site.app4web.app4web.Helper.JasonHelper
+    // 3 - site.app4web.app4web.Launcher.ConfigurableStethoTree debug
+    // 5 -site.app4web.app4web.Launcher.DebugLauncher debug
+    implementation 'com.jakewharton.timber:timber:5.0.1'  // Jun 28, 2018 живая
+}
