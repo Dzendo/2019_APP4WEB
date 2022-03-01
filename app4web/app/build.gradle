@@ -9,13 +9,13 @@ plugins {
 
 android {
     compileSdk 32
-    buildToolsVersion '32.0.0'
+    buildToolsVersion '32.1.0-rc1'
    // ndkVersion '21.1.6363665 rc3'
     //ndkVersion '21.0.6113669'
     defaultConfig {
         applicationId "site.app4web.app4web"
         minSdkVersion 22
-        targetSdkVersion 30
+        targetSdkVersion 32
         versionCode 3
         versionName "0.1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -34,8 +34,8 @@ android {
     productFlavors {
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 
     kotlinOptions {
@@ -62,10 +62,10 @@ dependencies {
     //implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"  // not need
     //implementation 'androidx.appcompat:appcompat:1.1.0-rc01'  //  not need
     //implementation 'androidx.core:core-ktx:1.2.0-alpha03'  //  not need
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.2'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
     //implementation 'androidx.recyclerview:recyclerview:1.1.0-beta03' //  not need
     //implementation 'com.google.android.material:material:1.2.0'
-    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'com.google.android.material:material:1.5.0'
 
     // STANDART FAB
     //implementation 'androidx.multidex:multidex:2.0.1'    // >64K DEX  //  not need
@@ -150,7 +150,7 @@ dependencies {
     //implementation 'com.squareup.okhttp3:okhttp:4.1.0'  // Aug 12, 2019
     //implementation 'com.squareup.okhttp3:okhttp:4.2.2'  // Окт 02, 2019
     //implementation 'com.squareup.okhttp3:okhttp:4.8.0'  // 	(Jan 07, 2020)
-    implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.3'  // 	(Jan 07, 2020)
+    implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.4'  // 	(Jan 07, 2020)
     //    // рассмотреть стандарт google-service - может то же самое
 
     //  с GSON и XML rest
@@ -180,7 +180,7 @@ dependencies {
     // 13  - seed\Core\JasonParser.java
     //implementation 'com.eclipsesource.j2v8:j2v8:5.0.103@aar'  // Apr 29, 2019
     //implementation 'com.eclipsesource.j2v8:j2v8:6.1.0@aar'  // feb 09, 2020
-    implementation 'com.eclipsesource.j2v8:j2v8:6.2.0@aar'  // feb 09, 2021
+    implementation 'com.eclipsesource.j2v8:j2v8:6.2.1@aar'  // feb 09, 2021
 
     // Библиотека для воспроизведения поведения нижних навигационных указаний из Material Design.
     // Библиотека для реализации компонента «Нижняя навигация» из рекомендаций по проектированию материалов
