@@ -8,14 +8,14 @@ plugins {
 }
 
 android {
-    compileSdk 32
-    buildToolsVersion '32.1.0-rc1'
+    compileSdk 33
+    buildToolsVersion '33.0.0'
    // ndkVersion '21.1.6363665 rc3'
     //ndkVersion '21.0.6113669'
     defaultConfig {
         applicationId "site.app4web.app4web"
         minSdkVersion 22
-        targetSdkVersion 32
+        targetSdkVersion 33
         versionCode 3
         versionName "0.1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -58,14 +58,15 @@ android {
 }
 // Версия от 01.09.2019 05:00
 dependencies {
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     //implementation fileTree(include: ['*.jar'], dir: 'libs')
     //implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"  // not need
     //implementation 'androidx.appcompat:appcompat:1.1.0-rc01'  //  not need
     //implementation 'androidx.core:core-ktx:1.2.0-alpha03'  //  not need
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     //implementation 'androidx.recyclerview:recyclerview:1.1.0-beta03' //  not need
     //implementation 'com.google.android.material:material:1.2.0'
-    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'com.google.android.material:material:1.6.1'
 
     // STANDART FAB
     //implementation 'androidx.multidex:multidex:2.0.1'    // >64K DEX  //  not need
@@ -83,7 +84,7 @@ dependencies {
     // 4 - site.app4web.app4web.UI.RV_Gorizont
     // 2 - site.app4web.app4web.UI.RV_Gorizont
     // 5 - site.app4web.app4web.UI.Setting
-    implementation 'com.google.code.gson:gson:2.8.9'
+    implementation 'com.google.code.gson:gson:2.9.1'
     // 10 - site.app4web.app4web.UI.Poisk.Poisk
     //implementation 'com.google.apis:google-api-services-customsearch:v1-rev20181001-1.30.1'  //  v1-rev20181001-1.28.0 --XX--> v1-rev20181001-1.30.1
     implementation 'com.google.apis:google-api-services-customsearch:v1-rev20200504-1.30.9' //v1-rev20210918-1.32.1
@@ -100,7 +101,7 @@ dependencies {
     // для FireBase и Admob
     //implementation 'com.google.firebase:firebase-core:17.2.0'  //  not need ??
     // 2 - activity_main.xml
-    implementation 'com.google.firebase:firebase-ads:19.8.0'  // 18.1.1 ; 18.3.0 19.1.0 09.2020 19.3.0
+    implementation 'com.google.firebase:firebase-ads:21.2.0'  // 18.1.1 ; 18.3.0 19.1.0 09.2020 19.3.0
     //implementation 'com.google.firebase:firebase-ads:20.5.0'  // 18.1.1 ; 18.3.0 19.1.0 09.2020 19.3.0 XX
     // 4 - site.app4web.app4web.ExampleUnitTest
     testImplementation 'junit:junit:4.13.2'  // 4.12  -- > 4.13-beta-3
@@ -121,12 +122,12 @@ dependencies {
     // Наберите в chrome://inspect. Нажмите кнопку «Осмотреть», чтобы начать.
     // 5 - site.app4web.app4web.Launcher.DebugLauncher
     // 18 - site.app4web.app4web.Launcher.ConfigurableStethoTree
-    debugImplementation 'com.facebook.stetho:stetho-okhttp3:1.5.1'  // Mar 18, 2019
+    debugImplementation 'com.facebook.stetho:stetho-okhttp3:1.6.0' //Mar 30, 2021   1.5.1'  // Mar 18, 2019
 
     // Карты Гугл
     // 37 - site.app4web.app4web.Component.JasonMapComponent
     //implementation 'com.google.android.gms:play-services-maps:17.0.0'
-    implementation 'com.google.android.gms:play-services-maps:18.0.0'
+    implementation 'com.google.android.gms:play-services-maps:18.1.0'
     // Google Cloud Messaging
     // Mobile Vision API имеет детекторы, которые позволяют находить объекты на фотографиях и видео.
     //Это обучение поможет вам установить пример приложения для Android,
@@ -141,16 +142,16 @@ dependencies {
     // 5 now 2-site.app4web.app4web.Service.push.JasonPushMessageService
     // no  2- site.app4web.app4web.Service.push.JasonPushRegisterService
     // закоментарено JasonPushRegisterService  iid.FirebaseInstanceIdService
-    implementation 'com.google.firebase:firebase-messaging:21.0.1'  // 20.2.0 09.2020
+    //implementation 'com.google.firebase:firebase-messaging:23.0.8'  // 20.2.0 09.2020
     //implementation 'com.google.firebase:firebase-messaging:23.0.0'  // XX
-    // implementation 'com.google.firebase:firebase-messaging:20.1.0'
+     implementation 'com.google.firebase:firebase-messaging:20.1.0'
 
     // Клиент HTTP & HTTP / 2 для приложений Android и Java
     // 15 - site.app4web.app4web.Service.websocket.JasonWebsocketService
     //implementation 'com.squareup.okhttp3:okhttp:4.1.0'  // Aug 12, 2019
     //implementation 'com.squareup.okhttp3:okhttp:4.2.2'  // Окт 02, 2019
     //implementation 'com.squareup.okhttp3:okhttp:4.8.0'  // 	(Jan 07, 2020)
-    implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.5'  // 	(Jan 07, 2020)
+    implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.10' //un 27, 2022 // 5.0.0-alpha.7'  // 	(Jan 07, 2020)
     //    // рассмотреть стандарт google-service - может то же самое
 
     //  с GSON и XML rest
@@ -179,8 +180,9 @@ dependencies {
     // 30 - site.app4web.app4web.Action.JasonConvertAction;
     // 13  - seed\Core\JasonParser.java
     //implementation 'com.eclipsesource.j2v8:j2v8:5.0.103@aar'  // Apr 29, 2019
-    //implementation 'com.eclipsesource.j2v8:j2v8:6.1.0@aar'  // feb 09, 2020
-    implementation 'com.eclipsesource.j2v8:j2v8:6.2.1@aar'  // feb 09, 2021
+    implementation 'com.eclipsesource.j2v8:j2v8:6.1.0@aar'  // feb 09, 2020
+    //implementation 'com.eclipsesource.j2v8:j2v8:6.2.1@aa'  // feb 09, 2020
+    //implementation 'com.eclipsesource.j2v8:j2v8:6.2.1' //6.2.1@aar'  // feb 09, 2021
 
     // Библиотека для воспроизведения поведения нижних навигационных указаний из Material Design.
     // Библиотека для реализации компонента «Нижняя навигация» из рекомендаций по проектированию материалов
@@ -220,7 +222,7 @@ dependencies {
     //SingleDateAndTimePicker
     //You can now select a date and a time with only one widget !
     // 2-3 - site.app4web.app4web.Action.JasonUtilAction
-    implementation 'com.github.florent37:singledateandtimepicker:2.1.4'
+    implementation 'com.github.florent37:singledateandtimepicker:2.2.8' //Oct 06, 2020 2.1.4'
     // Nov 15, 2018 2.1.2  -- > Mar 19, 2019 2.1.4
 
     //This is a logger with a small, extensible API DebugTree

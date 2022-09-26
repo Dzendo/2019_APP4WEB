@@ -580,9 +580,9 @@ public class JasonAgentService {
                 settings.setDomStorageEnabled(true);
                 settings.setMediaPlaybackRequiresUserGesture(false);
                 settings.setJavaScriptCanOpenWindowsAutomatically(true);
-                settings.setAppCachePath(context.getCacheDir().getAbsolutePath());
+                // settings.setAppCachePath(context.getCacheDir().getAbsolutePath()); // 26092022
                 settings.setAllowFileAccess(true);
-                settings.setAppCacheEnabled(true);
+                //settings.setAppCacheEnabled(true); //26092022
                 settings.setCacheMode(WebSettings.LOAD_DEFAULT);
 
                 // 2.2. Create and Attach JavaScript Interface
