@@ -2,7 +2,7 @@
 // файл сборки верхнего уровня, в который вы можете добавить параметры конфигурации, общие для всех подпроектов / модулей.
 
 buildscript {
-    ext.kotlin_version = "1.7.20-RC"  //"1.7.10" //"1.6.10"
+    ext.kotlin_version = "1.6.21" //"1.6.10"
     repositories {
         google()
         mavenCentral()
@@ -11,15 +11,13 @@ buildscript {
     }
     dependencies {
         //classpath 'com.android.tools.build:gradle:7.1.0-beta04'
-        //classpath 'com.android.tools.build:gradle:7.3.0'
-        classpath 'com.android.tools.build:gradle:8.0.0-alpha01'
+        classpath 'com.android.tools.build:gradle:7.4.0-alpha02'
         //classpath 'com.android.tools.build:gradle:7.4.0-alpha01'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'com.google.gms:google-services:4.3.14'
+        classpath 'com.google.gms:google-services:4.3.10'
         // Ошибка- obsolete app4web при build - подлежит исправлению
         // 4,2,0 не было и вот опять :  'variant.getMergeResourcesProvider() 
-        classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.5.2'
-
+        classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.4.2'
     }
 }
 
