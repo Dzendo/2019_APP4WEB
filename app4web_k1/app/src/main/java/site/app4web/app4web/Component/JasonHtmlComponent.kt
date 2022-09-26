@@ -50,9 +50,9 @@ object JasonHtmlComponent {
                 settings.setDomStorageEnabled(true)
                 settings.setJavaScriptCanOpenWindowsAutomatically(true)
                 settings.setMediaPlaybackRequiresUserGesture(false)
-                settings.setAppCachePath(context.cacheDir.absolutePath)
+                //settings.setAppCachePath(context.cacheDir.absolutePath)  //26092022
                 settings.setAllowFileAccess(true)
-                settings.setAppCacheEnabled(true)
+                //settings.setAppCacheEnabled(true)  //26092022
                 settings.setCacheMode(WebSettings.LOAD_DEFAULT)
 
 

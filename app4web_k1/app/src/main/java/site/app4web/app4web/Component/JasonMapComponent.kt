@@ -184,15 +184,15 @@ object JasonMapComponent : JasonComponent() {
                         if (pin.has("description")) {
                             options.snippet(pin.getString("description"))
                         }
-                        val marker: Marker = map.addMarker(options)
+                        val marker: Marker? = map.addMarker(options)
                         if (pin.has("style")) {
                             val style: JSONObject = pin.getJSONObject("style")
                             if (style.has("selected") && style.getBoolean("selected")) {
-                                marker.showInfoWindow()
+                                marker?.showInfoWindow()
                             }
                         }
                         if (pin.has(JasonComponent.Companion.ACTION_PROP)) {
-                            marker.setTag(pin)
+                            marker?.tag = pin
                         }
                     }
                 }

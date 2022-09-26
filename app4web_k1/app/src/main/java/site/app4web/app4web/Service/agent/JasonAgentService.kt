@@ -18,6 +18,8 @@ import okhttp3.Request
 import okhttp3.Response
 import okhttp3.internal.notify
 import okhttp3.internal.wait
+//import okhttp3.internal.notify
+//import okhttp3.internal.wait
 import org.json.JSONArray
 import org.json.JSONObject
 import site.app4web.app4web.Core.JasonParser
@@ -575,9 +577,9 @@ class JasonAgentService  // Initialize
                 settings.domStorageEnabled = true
                 settings.mediaPlaybackRequiresUserGesture = false
                 settings.javaScriptCanOpenWindowsAutomatically = true
-                settings.setAppCachePath(context.cacheDir.absolutePath)
+                // settings.setAppCachePath(context.cacheDir.absolutePath)  // 26092022
                 settings.allowFileAccess = true
-                settings.setAppCacheEnabled(true)
+                //  settings.setAppCacheEnabled(true)  // 26092022
                 settings.cacheMode = WebSettings.LOAD_DEFAULT
 
                 // 2.2. Create and Attach JavaScript Interface

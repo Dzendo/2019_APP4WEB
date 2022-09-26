@@ -27,7 +27,8 @@
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="stateHidden" >
+            android:windowSoftInputMode="stateHidden"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -40,7 +41,8 @@
             android:name=".Core.JasonViewActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="adjustResize" >
+            android:windowSoftInputMode="adjustResize"
+            android:exported="true">
             <!--intent-filter - Было в исходном файле-->
             <intent-filter>
                 <action android:name="android.intent.action.JasonViewActivity" />

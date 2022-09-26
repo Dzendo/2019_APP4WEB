@@ -142,9 +142,9 @@ dependencies {
     // 5 now 2-site.app4web.app4web.Service.push.JasonPushMessageService
     // no  2- site.app4web.app4web.Service.push.JasonPushRegisterService
     // закоментарено JasonPushRegisterService  iid.FirebaseInstanceIdService
-    //implementation 'com.google.firebase:firebase-messaging:23.0.8'  // 20.2.0 09.2020
-    //implementation 'com.google.firebase:firebase-messaging:23.0.0'  // XX
-     implementation 'com.google.firebase:firebase-messaging:20.1.0'
+    //implementation 'com.google.firebase:firebase-messaging:23.0.8'  // 20.2.0 09.2020 XX
+    implementation 'com.google.firebase:firebase-messaging:21.1.0'  // Work
+    // implementation 'com.google.firebase:firebase-messaging:20.1.0'
 
     // Клиент HTTP & HTTP / 2 для приложений Android и Java
     // 15 - site.app4web.app4web.Service.websocket.JasonWebsocketService
@@ -180,9 +180,11 @@ dependencies {
     // 30 - site.app4web.app4web.Action.JasonConvertAction;
     // 13  - seed\Core\JasonParser.java
     //implementation 'com.eclipsesource.j2v8:j2v8:5.0.103@aar'  // Apr 29, 2019
-    implementation 'com.eclipsesource.j2v8:j2v8:6.1.0@aar'  // feb 09, 2020
-    //implementation 'com.eclipsesource.j2v8:j2v8:6.2.1@aa'  // feb 09, 2020
+    //implementation 'com.eclipsesource.j2v8:j2v8:6.1.0@aar'  // feb 09, 2020
+    //implementation 'com.eclipsesource.j2v8:j2v8:6.1.0'  // feb 09, 2020
+    //implementation 'com.eclipsesource.j2v8:j2v8:6.2.0' //6.2.1@aar'  // Jun 20, 2020
     //implementation 'com.eclipsesource.j2v8:j2v8:6.2.1' //6.2.1@aar'  // feb 09, 2021
+    implementation 'com.eclipsesource.j2v8:j2v8:6.2.1@aar'  // feb 09, 2021
 
     // Библиотека для воспроизведения поведения нижних навигационных указаний из Material Design.
     // Библиотека для реализации компонента «Нижняя навигация» из рекомендаций по проектированию материалов

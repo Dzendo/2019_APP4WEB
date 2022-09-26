@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context=".UI.RV_Gorizont">
+
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_gorizont"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="8dp"
+            tools:listitem="@layout/item_gorizont"
+            android:orientation="horizontal"
+            android:background="#8ACCD1CC"
+            android:backgroundTint="#00EBE7E7"/>
+
+</FrameLayout>

@@ -21,9 +21,11 @@ import android.widget.Toast
 
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.InterstitialAd
+//import com.google.android.gms.ads.InterstitialAd
 import com.google.android.gms.ads.MobileAds
-import com.google.android.gms.ads.reward.RewardedVideoAd
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.rewarded.RewardedAd
+//import com.google.android.gms.ads.reward.RewardedVideoAd
 import com.google.firebase.analytics.FirebaseAnalytics
 
 import kotlinx.android.synthetic.main.activity_main.*
@@ -69,7 +71,7 @@ class MainActivity : AppCompatActivity() {
     // переменные для показа рекламных блоков от FirebaseAnalytics and MobileAds
     private lateinit var mFirebaseAnalytics: FirebaseAnalytics
     private lateinit var mInterstitialAd: InterstitialAd
-    private lateinit var mRewardedVideoAd: RewardedVideoAd
+    private lateinit var mRewardedVideoAd: RewardedAd //RewardedVideoAd
 
     private lateinit var urltemplate : String  // текущий Шаблон для "оборачивания" должен выбираться
     private  var url_http : String ="" //setting.url_http    // Строка ввода с которой работаем с клиентом
@@ -99,7 +101,8 @@ class MainActivity : AppCompatActivity() {
 
         // Obtain the FirebaseAnalytics and MobileAds Ainstance.
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
-        MobileAds.initialize(this, getString(R.string.app_ad_unit_id_0))
+       // MobileAds.initialize(this, getString(R.string.app_ad_unit_id_0))
+        MobileAds.initialize(this) //, getString(R.string.app_ad_unit_id_0))
         // запрос баннера для первого экрана поле : adView01 - Баннер
         val madRequest = AdRequest.Builder().build()
         adView01.loadAd(madRequest)  // sugar
