@@ -2,7 +2,7 @@
 // файл сборки верхнего уровня, в который вы можете добавить параметры конфигурации, общие для всех подпроектов / модулей.
 
 buildscript {
-    ext.kotlin_version = "1.7.20-RC"
+    ext.kotlin_version = "1.7.20"
     repositories {
         google()
         jcenter()

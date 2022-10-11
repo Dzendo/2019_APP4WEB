@@ -54,6 +54,7 @@ android {
         exclude 'META-INF/notice.txt'
         exclude 'META-INF/ASL2.0'
     }
+    namespace 'site.app4web.app4web'
 
 }
 // Версия от 01.09.2019 05:00
@@ -101,7 +102,7 @@ dependencies {
     // для FireBase и Admob
     //implementation 'com.google.firebase:firebase-core:17.2.0'  //  not need ??
     // 2 - activity_main.xml
-    implementation 'com.google.firebase:firebase-ads:21.2.0'  // 18.1.1 ; 18.3.0 19.1.0 09.2020 19.3.0
+    implementation 'com.google.firebase:firebase-ads:21.3.0'  // 18.1.1 ; 18.3.0 19.1.0 09.2020 19.3.0
     //implementation 'com.google.firebase:firebase-ads:20.5.0'  // 18.1.1 ; 18.3.0 19.1.0 09.2020 19.3.0 XX
     // 4 - site.app4web.app4web.ExampleUnitTest
     testImplementation 'junit:junit:4.13.2'  // 4.12  -- > 4.13-beta-3

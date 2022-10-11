@@ -52,6 +52,7 @@ android {
         exclude 'META-INF/notice.txt'
         exclude 'META-INF/ASL2.0'
     }
+    namespace 'site.app4web.app4web'
 
 }
 // Версия от 01.09.2019 05:00
