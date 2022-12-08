@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:dist="http://schemas.android.com/apk/distribution"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!--dist:module dist:instant="true" /-->
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+
+    <application
+        android:allowBackup="true"
+        android:name=".Launcher.Launcher"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
+        tools:ignore="GoogleAppIndexingWarning">
+
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateHidden"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+
+        <activity
+            android:name=".Core.JasonViewActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustResize"
+            android:exported="true">
+            <!--intent-filter - Было в исходном файле-->
+            <intent-filter>
+                <action android:name="android.intent.action.JasonViewActivity" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <!-- Uncomment below intent-filter to support custom url schemes -->
+            <!-- Раскомментируйте ниже намерения-фильтр для поддержки пользовательских схем URL -->
+            <!-- видимо это будет автоматом вызывать JasonViewActivity для всех jason схем  -->
+            <!--
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="jason" />
+            </intent-filter>
+            -->
+
+            <!-- Uncomment below intent-filter to support url opening -->
+            <!-- Раскомментируйте ниже интент-фильтр для поддержки открытия URL -->
+            <!-- Раскомментируйте ниже интент-фильтр для поддержки открытия URL -->
+            <!--
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="http" android:host="oauth" />
+            </intent-filter>
+            -->
+        </activity>
+        <activity
+            android:name="com.commonsware.cwac.cam2.CameraActivity"
+            android:process=":cwac_cam2"
+            android:theme="@style/CameraTheme">
+        </activity>
+        <!-- Uncomment below line and add your Google Maps API key -->
+        <!-- Раскомментируйте ниже строки и добавьте свой ключ API Карт Google -->
+        <!--
+        <meta-data android:name="com.google.android.geo.API_KEY" android:value="YOUR GOOGLE MAPS API KEY HERE"/>
+         -->
+
+        <!-- Uncomment below to support push notification -->
+        <!-- Раскомментируйте ниже для поддержки push-уведомлений -->
+        <!--
+        <service
+            android:name=".Service.push.JasonPushRegisterService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
+        <service
+            android:name=".Service.push.JasonPushMessageService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+        -->
+
+        <!-- Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="@string/app_ad_unit_id_0"/>
+        <!--adb shell setprop debug.firebase.analytics.app site.app4web.app4web -->
+
+    </application>
+
+
+    <!-- Uncomment below line to enable $util.addressbook -->
+    <!-- Раскомментируйте ниже строки, чтобы включить $util.addressbook -->
+
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+
+    <!-- Uncomment below lines to enable $geo.get -->
+    <!-- Раскомментируйте строки ниже, чтобы включить $geo.get -->
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+
+    <!-- Uncomment below lines to enable $audio.record -->
+    <!-- Раскомментируйте строки ниже, чтобы включить $audio.record -->
+    <!--
+        <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+        <uses-permission android:name="android.permission.WAKE_LOCK" />
+    -->
+
+    <meta-data android:name="com.google.android.gms.vision.DEPENDENCIES" android:value="barcode"/>
+
+
+</manifest>

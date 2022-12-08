@@ -64,7 +64,7 @@ dependencies {
     //implementation 'androidx.core:core-ktx:1.2.0-alpha03'  //  not need
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     //implementation 'androidx.recyclerview:recyclerview:1.1.0-beta03' //  not need
-    implementation 'com.google.android.material:material:1.6.1'
+    implementation 'com.google.android.material:material:1.7.0'
 
     // STANDART FAB
     //implementation 'androidx.multidex:multidex:2.0.1'    // >64K DEX  //  not need
@@ -74,7 +74,7 @@ dependencies {
     // Apache Commons lang -Доп методы Java util
 
     // 2 - site.app4web.app4web.UI.Adapter.kt
-    implementation 'com.squareup.picasso:picasso:2.5.2'  //  2.5.2 STOP --XX--> 2.71828
+    implementation 'com.squareup.picasso:picasso:2.8' //2.5.2'  //  2.5.2 STOP --XX--> 2.71828
     //implementation 'com.squareup.picasso:picasso:2.71828'  //  2.5.2 STOP --XX--> 2.71828
     // Picasso.with(context) нет whith Adapter.kt
     //implementation 'com.squareup.picasso:picasso:2.71828'  //  2.5.2 STOP --XX--> 2.71828
@@ -82,7 +82,7 @@ dependencies {
     // 4 - site.app4web.app4web.UI.RV_Gorizont
     // 2 - site.app4web.app4web.UI.RV_Gorizont
     // 5 - site.app4web.app4web.UI.Setting
-    implementation 'com.google.code.gson:gson:2.9.1'
+    implementation 'com.google.code.gson:gson:2.10'
     // 10 - site.app4web.app4web.UI.Poisk.Poisk
     //implementation 'com.google.apis:google-api-services-customsearch:v1-rev20181001-1.30.1'  //  v1-rev20181001-1.28.0 --XX--> v1-rev20181001-1.30.1
     implementation 'com.google.apis:google-api-services-customsearch:v1-rev20200504-1.30.9'  // Вроде работает 78 v1-rev78-1.25.0
@@ -95,11 +95,11 @@ dependencies {
     // для FireBase и Admob
     //implementation 'com.google.firebase:firebase-core:17.2.0'  //  not need ??
     // 2 - activity_main.xml
-    implementation 'com.google.firebase:firebase-ads:21.2.0'  // 18.1.1 ; 18.3.0 19.3.0
+    implementation 'com.google.firebase:firebase-ads:21.3.0'  // 18.1.1 ; 18.3.0 19.3.0
     // 4 - site.app4web.app4web.ExampleUnitTest
     testImplementation 'junit:junit:4.13.2'  // 4.12  -- > 4.13-beta-3
     //androidTestImplementation 'androidx.test.ext:junit:1.1.2-alpha02' //1.1.1 -- > 1.1.2-alpha02
-    androidTestImplementation 'androidx.test:runner:1.4.0'
+    androidTestImplementation 'androidx.test:runner:1.5.1'
     // need site.app4web.app4web.ExampleInstrumentedTest
     //androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0' //  not need ??
 
@@ -143,7 +143,7 @@ dependencies {
     // 15 - site.app4web.app4web.Service.websocket.JasonWebsocketService
     //implementation 'com.squareup.okhttp3:okhttp:4.1.0'  // Aug 12, 2019
     //implementation 'com.squareup.okhttp3:okhttp:4.2.2'  // Окт 02, 2019
-    implementation 'com.squareup.okhttp3:okhttp:4.9.0'  // 	(Jan 07, 2020)
+    implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.2'  // 	(Jan 07, 2020)
     //implementation 'com.squareup.okhttp3:okhttp:4.10.0'  // 	Jun 12, 2022
     //implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.10'  // 	(Jan 07, 2020)
     // рассмотреть стандарт google-service - может то же самое
@@ -160,8 +160,9 @@ dependencies {
     // 15-ItemAdapter;
     // 11-JasonImageHelper
     // 2 - site.app4web.app4web.Launcher.Launcher
+    // https://stackoverflow.com/questions/51531229/glidedrawableimageviewtarget-not-found-in-glide-4
     implementation 'com.github.bumptech.glide:glide:3.7.0'    // Jan 24, 2016 3.7.0 stop --XX--> 4.9.0 Feb, 2019
-    //implementation 'com.github.bumptech.glide:glide:4.11.0'   // 	(Jan 08, 2020) не транслируется  XX
+    //implementation 'com.github.bumptech.glide:glide:4.14.2'   // 	(Jan 08, 2020) не транслируется  XX
     // Jan 24, 2016 3.7.0 stop --XX--> 4.9.0 Feb, 2019
     // 35 error: cannot find symbol class GlideDrawable во многих модулях при подъеме
     // error: package com.bumptech.glide.request.animation does not exist
