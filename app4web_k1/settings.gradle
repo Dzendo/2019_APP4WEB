@@ -1,2 +1,19 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        jcenter()
+        maven { url "https://jitpack.io" }  // AndroidAudioRecorder:0.3.0-jasonette
+        maven { url "https://s3.amazonaws.com/repo.commonsware.com" }  // cwac:cam2:0.7.4
+    }
+}
 include ':app'
 rootProject.name='app4web'
