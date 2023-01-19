@@ -18,13 +18,12 @@ import org.json.JSONArray
 import org.json.JSONObject
 import org.json.JSONTokener
 import java.io.InputStream
-import java.lang.reflect.Constructor
 import java.lang.reflect.Method
 import java.nio.charset.StandardCharsets
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 import okhttp3.OkHttpClient
-import site.app4web.app4web.BuildConfig
+import site.app4web.app4web.BuildConfigLoc
 import site.app4web.app4web.Service.agent.JasonAgentService
 import site.app4web.app4web.Service.websocket.JasonWebsocketService
 import site.app4web.app4web.UI.Setting
@@ -216,10 +215,10 @@ open class Launcher : Application() {
             device.put("os", os)
             env!!.put("device", device)
             val app = JSONObject()
-            app.put("version", BuildConfig.VERSION_NAME)
+            app.put("version", BuildConfigLoc.VERSION_NAME)
             app.put(
                 "build",
-                Integer.toString(BuildConfig.VERSION_CODE)
+                Integer.toString(BuildConfigLoc.VERSION_CODE)
             )
             env!!.put("app", app)
         } catch (e: Exception) {

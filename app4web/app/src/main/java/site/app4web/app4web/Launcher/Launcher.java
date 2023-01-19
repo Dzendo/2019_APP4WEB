@@ -11,6 +11,8 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 
 import com.bumptech.glide.request.target.ViewTarget;
+
+
 import site.app4web.app4web.Core.JasonModel;
 import site.app4web.app4web.Core.JasonViewActivity;
 import site.app4web.app4web.Helper.JasonHelper;
@@ -29,7 +31,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
-import site.app4web.app4web.BuildConfig;
+import site.app4web.app4web.BuildConfigLoc;
 import site.app4web.app4web.Service.agent.JasonAgentService;
 import site.app4web.app4web.Service.websocket.JasonWebsocketService;
 import site.app4web.app4web.UI.Setting;
@@ -209,8 +211,8 @@ public class Launcher extends Application {
             this.env.put("device", device);
 
             JSONObject app = new JSONObject();
-            app.put("version", BuildConfig.VERSION_NAME);
-            app.put("build", Integer.toString(BuildConfig.VERSION_CODE));
+            app.put("version", BuildConfigLoc.VERSION_NAME);
+            app.put("build", Integer.toString(BuildConfigLoc.VERSION_CODE));
             this.env.put("app", app);
 
         } catch (Exception e) {
